@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { validateLead } from '@/lib/actions'
+import { validateLead } from '@/lib/validation'
 
 describe('validateLead', () => {
   it('returns null when all fields are valid', () => {
