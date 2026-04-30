@@ -44,5 +44,5 @@ next-env.d.ts
 .superpowers/
 
 # Source asset folders (copied to public/ in Task 2)
-Brand/
-Proyectos/
+/Brand/
+/Proyectos/
