@@ -22,10 +22,11 @@ export default function JsonLd({ proyecto }: Props) {
     },
   }
 
+  const safeJson = JSON.stringify(schema).replace(/<\/script>/gi, '<\\/script>')
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{ __html: safeJson }}
     />
   )
 }

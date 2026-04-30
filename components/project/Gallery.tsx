@@ -20,7 +20,7 @@ export default function Gallery({ imagenes }: Props) {
       <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
         {imagenes.map((src, i) => (
           <motion.div
-            key={i}
+            key={src}
             className="mb-4 cursor-pointer overflow-hidden"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}

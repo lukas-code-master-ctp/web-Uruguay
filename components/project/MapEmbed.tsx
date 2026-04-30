@@ -3,9 +3,19 @@ interface Props {
   nombre: string
 }
 
+function buildMapSrc(coordenadas: string): string | null {
+  const parts = coordenadas.split(',')
+  if (parts.length !== 2) return null
+  const lat = parseFloat(parts[0])
+  const lng = parseFloat(parts[1])
+  if (!isFinite(lat) || !isFinite(lng)) return null
+  if (lat < -90 || lat > 90 || lng < -180 || lng > 180) return null
+  return `https://maps.google.com/maps?q=${lat},${lng}&z=14&output=embed`
+}
+
 export default function MapEmbed({ coordenadas, nombre }: Props) {
-  const [lat, lng] = coordenadas.split(',').map(Number)
-  const src = `https://maps.google.com/maps?q=${lat},${lng}&z=14&output=embed`
+  const src = buildMapSrc(coordenadas)
+  if (!src) return null
 
   return (
     <section className="px-6 py-16 md:px-16">
@@ -18,6 +28,7 @@ export default function MapEmbed({ coordenadas, nombre }: Props) {
           height="400"
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
+          sandbox="allow-scripts allow-same-origin"
           className="block"
         />
       </div>

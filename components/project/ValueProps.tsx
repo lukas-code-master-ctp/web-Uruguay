@@ -14,7 +14,7 @@ export default function ValueProps({ destacados }: Props) {
       <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
         {destacados.slice(0, 3).map((item, i) => (
           <motion.div
-            key={i}
+            key={item}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

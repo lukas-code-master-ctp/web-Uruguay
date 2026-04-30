@@ -13,7 +13,7 @@ export default function Amenities({ amenities }: Props) {
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {amenities.map((item, i) => (
           <motion.li
-            key={i}
+            key={item}
             initial={{ opacity: 0, x: -10 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}

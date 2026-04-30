@@ -14,7 +14,8 @@ export default function FinancingCalc({ precioBase, cuotas, tasas }: Props) {
   const [precio, setPrecio] = useState(precioBase)
   const [plazoIdx, setPlazoIdx] = useState(1)
 
-  const result = calcularFinanciamiento(precio, cuotas[plazoIdx], tasas[plazoIdx])
+  const safeIdx = Math.min(plazoIdx, Math.min(cuotas.length, tasas.length) - 1)
+  const result = calcularFinanciamiento(precio, cuotas[safeIdx], tasas[safeIdx])
 
   const fmt = (n: number) =>
     `USD $${n.toLocaleString('es-UY')}`
@@ -33,7 +34,11 @@ export default function FinancingCalc({ precioBase, cuotas, tasas }: Props) {
             <input
               type="number"
               value={precio}
-              onChange={(e) => setPrecio(Number(e.target.value))}
+              onChange={(e) => {
+                const raw = Number(e.target.value)
+                if (!isFinite(raw)) return
+                setPrecio(Math.min(200000, Math.max(50000, raw)))
+              }}
               step={5000}
               min={50000}
               max={200000}
@@ -49,7 +54,7 @@ export default function FinancingCalc({ precioBase, cuotas, tasas }: Props) {
                   key={c}
                   onClick={() => setPlazoIdx(i)}
                   className={`flex-1 border py-3 text-xs font-semibold tracking-widest uppercase transition-colors ${
-                    plazoIdx === i
+                    safeIdx === i
                       ? 'border-[#0A0A0A] bg-[#0A0A0A] text-white'
                       : 'border-[#D9D9D9] bg-white text-[#0A0A0A] hover:border-[#0A0A0A]'
                   }`}

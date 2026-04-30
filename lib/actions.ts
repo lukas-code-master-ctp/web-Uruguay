@@ -8,12 +8,17 @@ export async function submitLead(
   _prevState: { success: boolean; error: string | null },
   formData: FormData
 ): Promise<{ success: boolean; error: string | null }> {
+  const str = (key: string) => {
+    const v = formData.get(key)
+    return typeof v === 'string' ? v : ''
+  }
+
   const lead: Lead = {
-    nombre: formData.get('nombre') as string,
-    email: formData.get('email') as string,
-    telefono: formData.get('telefono') as string,
-    mensaje: formData.get('mensaje') as string,
-    proyecto: formData.get('proyecto') as string,
+    nombre: str('nombre'),
+    email: str('email'),
+    telefono: str('telefono'),
+    mensaje: str('mensaje'),
+    proyecto: str('proyecto'),
   }
 
   const error = validateLead(lead)

@@ -13,7 +13,7 @@ export default function NearbyPoints({ puntos }: Props) {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {puntos.map((punto, i) => (
           <motion.div
-            key={i}
+            key={punto}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
