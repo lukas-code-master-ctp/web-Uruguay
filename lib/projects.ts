@@ -34,7 +34,7 @@ const MOCK_PROYECTOS: Proyecto[] = [
     imagenes: {
       hero: '/proyectos/la-martina/hero.jpg',
       galeria: Array.from({ length: 7 }, (_, i) => `/proyectos/la-martina/galeria-${i + 1}.jpg`),
-      plano: '/proyectos/la-martina/plano.png',
+      plano: '/proyectos/la-martina/plano.jpg',
       video: '/proyectos/la-martina/video.mp4',
     },
   },
@@ -78,7 +78,7 @@ const MOCK_PROYECTOS: Proyecto[] = [
     imagenes: {
       hero: '/proyectos/ama-jose-ignacio/hero.jpg',
       galeria: Array.from({ length: 7 }, (_, i) => `/proyectos/ama-jose-ignacio/galeria-${i + 1}.jpg`),
-      plano: '/proyectos/ama-jose-ignacio/plano.png',
+      plano: '/proyectos/ama-jose-ignacio/plano.jpg',
       video: '/proyectos/ama-jose-ignacio/video.mp4',
     },
   },
@@ -133,7 +133,7 @@ export function parseProyecto(row: string[]): Proyecto {
     imagenes: {
       hero: `/proyectos/${slug}/hero.jpg`,
       galeria,
-      plano: hasPlano ? `/proyectos/${slug}/plano.png` : null,
+      plano: hasPlano ? `/proyectos/${slug}/plano.jpg` : null,
       video: NO_VIDEO_SLUGS.has(slug) ? null : `/proyectos/${slug}/video.mp4`,
     },
   }
