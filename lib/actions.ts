@@ -36,7 +36,8 @@ export async function submitLead(
       lead.proyecto,
     ])
     return { success: true, error: null }
-  } catch {
+  } catch (err) {
+    console.error('[submitLead] Error writing to Google Sheets:', err)
     return { success: false, error: 'Error al enviar. Intenta nuevamente.' }
   }
 }

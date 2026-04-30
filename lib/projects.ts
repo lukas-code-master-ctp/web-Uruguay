@@ -2,6 +2,8 @@ import { cache } from 'react'
 import { readSheet } from './sheets'
 import type { Proyecto, SiteConfig } from './types'
 
+const NO_VIDEO_SLUGS = new Set(['tierras-del-este'])
+
 const GALLERY_COUNTS: Record<string, number> = {
   'la-martina': 7,
   'aires-manantiales': 6,
@@ -37,7 +39,7 @@ export function parseProyecto(row: string[]): Proyecto {
       hero: `/proyectos/${slug}/hero.jpg`,
       galeria,
       plano: hasPlano ? `/proyectos/${slug}/plano.png` : null,
-      video: `/proyectos/${slug}/video.mp4`,
+      video: NO_VIDEO_SLUGS.has(slug) ? null : `/proyectos/${slug}/video.mp4`,
     },
   }
 }
