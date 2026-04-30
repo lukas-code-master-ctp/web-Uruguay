@@ -1,33 +1,41 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next'
+import { Montserrat } from 'next/font/google'
+import './globals.css'
+import LenisProvider from '@/components/shared/LenisProvider'
+import WhatsAppButton from '@/components/shared/WhatsAppButton'
+import { getSiteConfig } from '@/lib/projects'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['300', '400', '600', '700'],
+  variable: '--font-montserrat',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'CTP Real Estate | Parcelas en Uruguay',
   description: 'Parcelas rurales en Uruguay. Inversión en naturaleza con financiamiento. CTP Real Estate.',
-};
+  openGraph: {
+    siteName: 'CTP Real Estate',
+    locale: 'es_UY',
+    type: 'website',
+  },
+}
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const config = await getSiteConfig()
+
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="es" className={montserrat.variable}>
+      <body>
+        <LenisProvider>
+          {children}
+          <WhatsAppButton
+            numero={config.whatsappNumero}
+            mensaje={config.whatsappMensaje}
+          />
+        </LenisProvider>
+      </body>
     </html>
-  );
+  )
 }
