@@ -34,7 +34,7 @@ export default function HomeHero() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: 'easeOut' }}
         >
-          <Logo variant="blanco" className="h-40 w-auto md:h-56" />
+          <Logo variant="blanco" className="h-24 w-auto md:h-36" />
         </motion.div>
 
         {/* Eyebrow */}
