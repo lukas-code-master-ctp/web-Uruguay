@@ -155,7 +155,7 @@ export function parseConfig(rows: string[][]): SiteConfig {
 
 export const getProyectos = cache(async (): Promise<Proyecto[]> => {
   if (IS_DEV_NO_SHEET) return MOCK_PROYECTOS
-  const rows = await readSheet('proyectos!A2:N1000')
+  const rows = await readSheet('proyectos!A2:O1000')
   return rows.map(parseProyecto).filter((p) => p.activo)
 })
 
