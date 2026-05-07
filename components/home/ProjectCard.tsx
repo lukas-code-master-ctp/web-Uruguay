@@ -13,7 +13,7 @@ interface Props {
 export default function ProjectCard({ proyecto, index }: Props) {
   return (
     <motion.section
-      className="relative flex h-screen w-full items-end overflow-hidden"
+      className="relative flex h-screen w-full items-center justify-center overflow-hidden"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: '-10%' }}
@@ -29,31 +29,34 @@ export default function ProjectCard({ proyecto, index }: Props) {
         className="object-cover"
       />
 
-      {/* Overlay degradado */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/45" />
 
-      {/* Número de proyecto */}
-      <span className="absolute top-10 right-10 text-xs font-light tracking-widest text-white/40">
-        {String(index + 1).padStart(2, '0')}
-      </span>
+      {/* Contenido centrado */}
+      <div className="relative z-10 flex flex-col items-center gap-5 px-6 text-center max-w-2xl">
 
-      {/* Contenido */}
-      <div className="relative z-10 w-full px-8 pb-16 md:px-16 md:pb-20">
-        <p className="mb-3 text-xs font-medium tracking-widest text-white/60 uppercase">
-          {proyecto.ubicacion}
-        </p>
-        <h2 className="mb-4 text-5xl font-light tracking-wider text-white md:text-7xl">
+        {/* Nombre del proyecto */}
+        <h2 className="text-6xl font-light tracking-wide text-white md:text-8xl" style={{ fontFamily: 'var(--font-montserrat)' }}>
           {proyecto.nombre}
         </h2>
-        <p className="mb-8 text-base font-light text-white/70">
-          Desde{' '}
-          <span className="font-semibold text-[#C6A665]">
-            USD ${proyecto.precioDesde.toLocaleString('es-UY')}
-          </span>
+
+        {/* Subtítulo — ubicación */}
+        <p className="text-xs font-medium tracking-widest text-white/80 uppercase">
+          {proyecto.ubicacion}
         </p>
+
+        {/* Separador */}
+        <div className="w-16 border-t border-white/50" />
+
+        {/* Descripción */}
+        <p className="text-sm font-light leading-relaxed text-white/80 md:text-base">
+          {proyecto.descripcion}
+        </p>
+
+        {/* CTA */}
         <Link
           href={`/chacras-${proyecto.slug}`}
-          className="inline-block border border-white px-8 py-4 text-xs font-semibold tracking-widest text-white uppercase transition-all duration-300 hover:bg-white hover:text-[#0A0A0A]"
+          className="mt-2 inline-block border border-white px-10 py-4 text-xs font-semibold tracking-widest text-white uppercase transition-all duration-300 hover:bg-white hover:text-[#0A0A0A]"
         >
           Ver proyecto
         </Link>
