@@ -18,7 +18,15 @@ export default function Nav({ proyectos = [] }: Props) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.85)
+    const onScroll = () => {
+      const y = window.scrollY
+      const vh = window.innerHeight
+      setVisible((prev) => {
+        if (!prev && y > vh * 0.85) return true
+        if (prev && y < vh * 0.2) return false
+        return prev
+      })
+    }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
