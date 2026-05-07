@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import Logo from './Logo'
@@ -15,9 +16,13 @@ interface Props {
 }
 
 export default function Nav({ proyectos = [] }: Props) {
+  const pathname = usePathname()
   const [visible, setVisible] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeSlug, setActiveSlug] = useState<string | null>(null)
+
+  // No mostrar en páginas de proyecto — tienen su propio nav
+  if (pathname.startsWith('/chacras/')) return null
 
   // Mostrar/ocultar nav con histéresis
   useEffect(() => {
