@@ -21,7 +21,7 @@ export default function StickyContact() {
       </p>
       <Link
         href="#contacto"
-        className="ml-auto border border-white px-6 py-3 text-xs font-semibold tracking-widest text-white uppercase transition-colors hover:bg-white hover:text-[#0A0A0A]"
+        className="ml-auto rounded-full border border-white/30 bg-white/15 px-6 py-3 text-xs font-semibold tracking-widest text-white uppercase backdrop-blur-md transition-all duration-300 hover:bg-white/30"
       >
         Consultar ahora
       </Link>

@@ -34,7 +34,7 @@ export default function ProjectHero({ proyecto }: Props) {
         </p>
         <Link
           href="#contacto"
-          className="inline-block border border-white px-8 py-4 text-xs font-semibold tracking-widest text-white uppercase transition-colors hover:border-[#C6A665] hover:text-[#C6A665]"
+          className="inline-block rounded-full border border-white/30 bg-white/15 px-8 py-4 text-xs font-semibold tracking-widest text-white uppercase backdrop-blur-md transition-all duration-300 hover:bg-white/30"
         >
           Consultar
         </Link>

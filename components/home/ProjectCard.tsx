@@ -56,7 +56,7 @@ export default function ProjectCard({ proyecto, index }: Props) {
         {/* CTA */}
         <Link
           href={`/chacras-${proyecto.slug}`}
-          className="mt-2 inline-block border border-white px-10 py-4 text-xs font-semibold tracking-widest text-white uppercase transition-all duration-300 hover:bg-white hover:text-[#0A0A0A]"
+          className="mt-2 inline-block rounded-full border border-white/30 bg-white/15 px-10 py-4 text-xs font-semibold tracking-widest text-white uppercase backdrop-blur-md transition-all duration-300 hover:bg-white/30"
         >
           Ver proyecto
         </Link>
