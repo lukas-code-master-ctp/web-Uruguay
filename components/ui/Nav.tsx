@@ -87,7 +87,7 @@ export default function Nav({ proyectos = [] }: Props) {
             {proyectos.map((p) => (
               <Link
                 key={p.slug}
-                href={`/chacras-${p.slug}`}
+                href={`/chacras/${p.slug}`}
                 className="relative pb-1 text-xs font-medium tracking-widest text-white/80 uppercase transition-colors hover:text-white"
               >
                 {p.nombre}
@@ -139,7 +139,7 @@ export default function Nav({ proyectos = [] }: Props) {
             {proyectos.map((p) => (
               <Link
                 key={p.slug}
-                href={`/chacras-${p.slug}`}
+                href={`/chacras/${p.slug}`}
                 className={`text-xs font-medium tracking-widest uppercase transition-colors ${
                   activeSlug === p.slug ? 'text-white' : 'text-white/80'
                 }`}
