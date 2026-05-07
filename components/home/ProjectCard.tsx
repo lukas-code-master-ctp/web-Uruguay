@@ -48,9 +48,9 @@ export default function ProjectCard({ proyecto, index }: Props) {
         {/* Separador */}
         <div className="w-16 border-t border-white/50" />
 
-        {/* Descripción */}
+        {/* Descripción preview */}
         <p className="text-sm font-light leading-relaxed text-white/80 md:text-base">
-          {proyecto.descripcion}
+          {proyecto.descripcionPreview || proyecto.descripcion}
         </p>
 
         {/* CTA */}

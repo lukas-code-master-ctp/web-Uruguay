@@ -5,6 +5,7 @@ export interface Proyecto {
   precioDesde: number
   precioHasta: number
   descripcion: string
+  descripcionPreview: string
   destacados: string[]
   amenities: string[]
   puntosCercanos: string[]
