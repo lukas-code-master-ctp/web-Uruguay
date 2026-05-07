@@ -11,7 +11,6 @@ interface Props {
 export default function ProjectHero({ proyecto }: Props) {
   return (
     <section
-      id="introduccion"
       className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-[#0A0A0A]"
     >
       {/* Imagen de fondo */}
@@ -52,13 +51,13 @@ export default function ProjectHero({ proyecto }: Props) {
           }}
           className="mt-2 rounded-full border border-white/30 bg-white/15 px-10 py-4 text-xs font-semibold tracking-widest text-white uppercase backdrop-blur-md transition-all duration-300 hover:bg-white/30"
         >
-          Ver proyecto
+          Ver más
         </button>
       </div>
 
       {/* Precio — esquina inferior derecha, fade suave */}
       <motion.div
-        className="absolute bottom-8 right-8 z-10 text-right"
+        className="absolute bottom-8 right-20 z-10 text-right md:right-24"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 1.4, ease: 'easeOut' }}

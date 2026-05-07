@@ -4,12 +4,29 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 export default function StickyContact() {
-  const [visible, setVisible] = useState(false)
+  const [pastHero, setPastHero]       = useState(false)
+  const [atContact, setAtContact]     = useState(false)
+  const visible = pastHero && !atContact
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.8)
+    // Aparecer al pasar el hero
+    const onScroll = () => setPastHero(window.scrollY > window.innerHeight * 0.8)
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+
+    // Desaparecer cuando la sección de contacto entra en pantalla
+    const contacto = document.getElementById('contacto')
+    const obs = contacto
+      ? new IntersectionObserver(
+          ([entry]) => setAtContact(entry.isIntersecting),
+          { threshold: 0.1 }
+        )
+      : null
+    if (obs && contacto) obs.observe(contacto)
+
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      obs?.disconnect()
+    }
   }, [])
 
   if (!visible) return null

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import ProjectHero from '@/components/project/ProjectHero'
 import ProjectSectionNav from '@/components/project/ProjectSectionNav'
+import ProjectIntro from '@/components/project/ProjectIntro'
 import ValueProps from '@/components/project/ValueProps'
 import Gallery from '@/components/project/Gallery'
 import Masterplan from '@/components/project/Masterplan'
@@ -64,8 +65,9 @@ export default async function ProyectoPage({ params }: Props) {
       <ProjectSectionNav tieneMasterplan={!!proyecto.imagenes.plano} />
 
       {/* Secciones */}
+      <ProjectIntro proyecto={proyecto} />
       <ValueProps destacados={proyecto.destacados} />
-      <NearbyPoints puntos={proyecto.puntosCercanos} />
+      <NearbyPoints puntos={proyecto.puntosCercanos} nombre={proyecto.nombre} ubicacion={proyecto.ubicacion} />
       <Amenities amenities={proyecto.amenities} />
       <Gallery imagenes={proyecto.imagenes.galeria} />
       {proyecto.imagenes.plano && <Masterplan src={proyecto.imagenes.plano} />}

@@ -21,9 +21,6 @@ export default function Nav({ proyectos = [] }: Props) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeSlug, setActiveSlug] = useState<string | null>(null)
 
-  // No mostrar en páginas de proyecto — tienen su propio nav
-  if (pathname.startsWith('/chacras/')) return null
-
   // Mostrar/ocultar nav con histéresis
   useEffect(() => {
     const onScroll = () => {
@@ -70,6 +67,9 @@ export default function Nav({ proyectos = [] }: Props) {
     return () => window.removeEventListener('click', close)
   }, [menuOpen])
 
+  // No mostrar en páginas de proyecto — tienen su propio nav
+  if (pathname.startsWith('/chacras/')) return null
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
@@ -83,9 +83,9 @@ export default function Nav({ proyectos = [] }: Props) {
         <div className="flex items-center justify-between gap-6">
 
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
+          <div className="flex-shrink-0">
             <Logo variant="blanco" className="h-8 w-auto" />
-          </Link>
+          </div>
 
           {/* Links desktop */}
           <div className="hidden md:flex items-center gap-6 flex-1 justify-center">
