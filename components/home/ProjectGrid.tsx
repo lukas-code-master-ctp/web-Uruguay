@@ -7,7 +7,7 @@ interface Props {
 
 export default function ProjectGrid({ proyectos }: Props) {
   return (
-    <section>
+    <section id="proyectos">
       {proyectos.map((p, i) => (
         <ProjectCard key={p.slug} proyecto={p} index={i} />
       ))}

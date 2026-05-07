@@ -1,4 +1,3 @@
-import Nav from '@/components/ui/Nav'
 import HomeHero from '@/components/home/HomeHero'
 import ProjectGrid from '@/components/home/ProjectGrid'
 import Footer from '@/components/shared/Footer'
@@ -11,7 +10,6 @@ export default async function Home() {
 
   return (
     <main>
-      <Nav />
       <HomeHero />
       <ProjectGrid proyectos={proyectos} />
       <Footer />
