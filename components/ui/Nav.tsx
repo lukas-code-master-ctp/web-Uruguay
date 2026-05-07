@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import Logo from './Logo'
 
 interface NavProyecto {
@@ -16,7 +17,9 @@ interface Props {
 export default function Nav({ proyectos = [] }: Props) {
   const [visible, setVisible] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [activeSlug, setActiveSlug] = useState<string | null>(null)
 
+  // Mostrar/ocultar nav con histéresis
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY
@@ -31,7 +34,30 @@ export default function Nav({ proyectos = [] }: Props) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Cierra el menú mobile al hacer click fuera
+  // IntersectionObserver: activa el slug cuya sección ocupa el centro del viewport
+  useEffect(() => {
+    if (proyectos.length === 0) return
+
+    const observers: IntersectionObserver[] = []
+
+    proyectos.forEach(({ slug }) => {
+      const el = document.getElementById(slug)
+      if (!el) return
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveSlug(slug)
+        },
+        { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
+      )
+      observer.observe(el)
+      observers.push(observer)
+    })
+
+    return () => observers.forEach((o) => o.disconnect())
+  }, [proyectos])
+
+  // Cierra menú mobile al click fuera
   useEffect(() => {
     if (!menuOpen) return
     const close = () => setMenuOpen(false)
@@ -62,9 +88,16 @@ export default function Nav({ proyectos = [] }: Props) {
               <Link
                 key={p.slug}
                 href={`/chacras-${p.slug}`}
-                className="text-xs font-medium tracking-widest text-white/80 uppercase transition-colors hover:text-white"
+                className="relative pb-1 text-xs font-medium tracking-widest text-white/80 uppercase transition-colors hover:text-white"
               >
                 {p.nombre}
+                {activeSlug === p.slug && (
+                  <motion.span
+                    layoutId="nav-underline"
+                    className="absolute bottom-0 left-0 right-0 h-px bg-white/60"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
               </Link>
             ))}
           </div>
@@ -107,7 +140,9 @@ export default function Nav({ proyectos = [] }: Props) {
               <Link
                 key={p.slug}
                 href={`/chacras-${p.slug}`}
-                className="text-xs font-medium tracking-widest text-white/80 uppercase"
+                className={`text-xs font-medium tracking-widest uppercase transition-colors ${
+                  activeSlug === p.slug ? 'text-white' : 'text-white/80'
+                }`}
                 onClick={() => setMenuOpen(false)}
               >
                 {p.nombre}

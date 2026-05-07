@@ -13,6 +13,7 @@ interface Props {
 export default function ProjectCard({ proyecto, index }: Props) {
   return (
     <motion.section
+      id={proyecto.slug}
       className="relative flex h-screen w-full items-center justify-center overflow-hidden"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
