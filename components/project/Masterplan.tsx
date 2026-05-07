@@ -10,7 +10,7 @@ interface Props {
 
 export default function Masterplan({ src }: Props) {
   return (
-    <section className="bg-[#f5f5f5] px-6 py-16 md:px-16">
+    <section id="masterplan" className="bg-[#f5f5f5] px-6 py-16 md:px-16">
       <p className="mb-8 text-xs font-semibold tracking-widest text-[#2E2E2E] uppercase">Plano del proyecto</p>
       <Zoom>
         <Image

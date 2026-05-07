@@ -15,7 +15,7 @@ export default function Gallery({ imagenes }: Props) {
   const [index, setIndex] = useState(0)
 
   return (
-    <section className="px-6 py-16 md:px-16">
+    <section id="galeria" className="px-6 py-16 md:px-16">
       <p className="mb-8 text-xs font-semibold tracking-widest text-[#2E2E2E] uppercase">Galería</p>
       <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
         {imagenes.map((src, i) => (

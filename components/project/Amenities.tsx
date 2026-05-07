@@ -8,7 +8,7 @@ interface Props {
 
 export default function Amenities({ amenities }: Props) {
   return (
-    <section className="border-t border-[#D9D9D9] px-6 py-16 md:px-16">
+    <section id="ecosistema" className="border-t border-[#D9D9D9] px-6 py-16 md:px-16">
       <p className="mb-8 text-xs font-semibold tracking-widest text-[#2E2E2E] uppercase">Servicios y amenities</p>
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {amenities.map((item, i) => (

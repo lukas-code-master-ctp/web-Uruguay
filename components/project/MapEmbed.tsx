@@ -18,7 +18,7 @@ export default function MapEmbed({ coordenadas, nombre }: Props) {
   if (!src) return null
 
   return (
-    <section className="px-6 py-16 md:px-16">
+    <section id="mapa" className="px-6 py-16 md:px-16">
       <p className="mb-8 text-xs font-semibold tracking-widest text-[#2E2E2E] uppercase">Ubicación</p>
       <div className="overflow-hidden border border-[#D9D9D9]">
         <iframe

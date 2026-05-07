@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import Nav from '@/components/ui/Nav'
 import ProjectHero from '@/components/project/ProjectHero'
+import ProjectSectionNav from '@/components/project/ProjectSectionNav'
 import ValueProps from '@/components/project/ValueProps'
 import Gallery from '@/components/project/Gallery'
 import Masterplan from '@/components/project/Masterplan'
@@ -55,13 +55,19 @@ export default async function ProyectoPage({ params }: Props) {
   return (
     <PageTransition>
       <JsonLd proyecto={proyecto} />
-      <Nav />
+
+      {/* Hero a pantalla completa */}
       <ProjectHero proyecto={proyecto} />
+
+      {/* Nav de secciones — sticky bajo el hero */}
+      <ProjectSectionNav tieneMasterplan={!!proyecto.imagenes.plano} />
+
+      {/* Secciones */}
       <ValueProps destacados={proyecto.destacados} />
+      <NearbyPoints puntos={proyecto.puntosCercanos} />
+      <Amenities amenities={proyecto.amenities} />
       <Gallery imagenes={proyecto.imagenes.galeria} />
       {proyecto.imagenes.plano && <Masterplan src={proyecto.imagenes.plano} />}
-      <Amenities amenities={proyecto.amenities} />
-      <NearbyPoints puntos={proyecto.puntosCercanos} />
       <MapEmbed coordenadas={proyecto.coordenadas} nombre={proyecto.nombre} />
       <FinancingCalc
         precioBase={proyecto.precioDesde}
@@ -69,6 +75,7 @@ export default async function ProyectoPage({ params }: Props) {
         tasas={proyecto.financiamientoTasas}
       />
       <ContactForm proyectoSlug={proyecto.slug} proyectoNombre={proyecto.nombre} />
+
       <StickyContact />
       <Footer />
     </PageTransition>

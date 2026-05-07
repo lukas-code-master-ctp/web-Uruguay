@@ -8,7 +8,7 @@ interface Props {
 
 export default function NearbyPoints({ puntos }: Props) {
   return (
-    <section className="bg-[#0A0A0A] px-6 py-16 md:px-16">
+    <section id="ubicacion" className="bg-[#0A0A0A] px-6 py-16 md:px-16">
       <p className="mb-8 text-xs font-semibold tracking-widest text-white/50 uppercase">Entorno</p>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {puntos.map((punto, i) => (

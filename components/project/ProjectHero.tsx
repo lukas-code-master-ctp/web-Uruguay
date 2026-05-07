@@ -8,7 +8,7 @@ interface Props {
 
 export default function ProjectHero({ proyecto }: Props) {
   return (
-    <section className="relative flex h-screen w-full items-end overflow-hidden bg-[#0A0A0A]">
+    <section id="introduccion" className="relative flex h-screen w-full items-end overflow-hidden bg-[#0A0A0A]">
       <Image
         src={proyecto.imagenes.hero}
         alt={proyecto.nombre}
