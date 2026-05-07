@@ -22,7 +22,7 @@ const MOCK_PROYECTOS: Proyecto[] = [
     ubicacion: 'José Ignacio, Uruguay',
     precioDesde: 90000,
     precioHasta: 130000,
-    descripcion: 'Barrio privado con vista al mar en José Ignacio, Uruguay. Parcelas de alto valor con acceso controlado y entorno natural privilegiado.',
+    descripcion: 'Barrio privado con vista al mar en José Ignacio, Uruguay. Chacras de alto valor con acceso controlado y entorno natural privilegiado.',
     destacados: ['Vista al mar', 'Seguridad 24h', 'Entorno natural'],
     amenities: ['Portón controlado', 'Caminería interna', 'Agua potable', 'Energía eléctrica'],
     puntosCercanos: ['Playa a 500m', 'José Ignacio a 8km', 'Punta del Este a 35km', 'Montevideo a 180km'],
@@ -44,7 +44,7 @@ const MOCK_PROYECTOS: Proyecto[] = [
     ubicacion: 'Manantiales, Uruguay',
     precioDesde: 70000,
     precioHasta: 100000,
-    descripcion: 'Parcelas en Manantiales rodeadas de naturaleza exuberante. Una de las zonas de mayor crecimiento en Uruguay.',
+    descripcion: 'Chacras en Manantiales rodeadas de naturaleza exuberante. Una de las zonas de mayor crecimiento en Uruguay.',
     destacados: ['Naturaleza pura', 'Acceso directo', 'Alta valorización'],
     amenities: ['Acceso controlado', 'Caminería interna', 'Agua potable'],
     puntosCercanos: ['José Ignacio a 10km', 'Laguna Garzón a 15km', 'Punta del Este a 45km'],
@@ -66,7 +66,7 @@ const MOCK_PROYECTOS: Proyecto[] = [
     ubicacion: 'José Ignacio, Uruguay',
     precioDesde: 55000,
     precioHasta: 130000,
-    descripcion: 'Parcelas en el corazón de José Ignacio. Vive rodeado de la belleza natural uruguaya con todas las comodidades.',
+    descripcion: 'Chacras en el corazón de José Ignacio. Vive rodeado de la belleza natural uruguaya con todas las comodidades.',
     destacados: ['Ubicación premium', 'Vistas panorámicas', 'Financiamiento flexible'],
     amenities: ['Portón controlado', 'Caminería pavimentada', 'Agua potable', 'Iluminación'],
     puntosCercanos: ['Centro José Ignacio a 5km', 'Playa a 3km', 'Punta del Este a 30km'],
@@ -88,7 +88,7 @@ const MOCK_PROYECTOS: Proyecto[] = [
     ubicacion: 'Rocha, Uruguay',
     precioDesde: 80000,
     precioHasta: 90000,
-    descripcion: 'Amplias parcelas en la región este de Uruguay. Tranquilidad, naturaleza y potencial de valorización excepcional.',
+    descripcion: 'Amplias chacras en la región este de Uruguay. Tranquilidad, naturaleza y potencial de valorización excepcional.',
     destacados: ['Grandes extensiones', 'Precio accesible', 'Alta valorización'],
     amenities: ['Acceso asfaltado', 'Agua potable', 'Electricidad'],
     puntosCercanos: ['Rocha a 20km', 'La Paloma a 35km', 'Montevideo a 220km'],
@@ -163,7 +163,7 @@ export const getSiteConfig = cache(async (): Promise<SiteConfig> => {
   if (IS_DEV_NO_SHEET) {
     return {
       whatsappNumero: '+59899000000',
-      whatsappMensaje: 'Hola, me interesa información sobre una de sus parcelas',
+      whatsappMensaje: 'Hola, me interesa información sobre una de sus chacras',
       emailContacto: 'info@ctprealestate.com',
     }
   }

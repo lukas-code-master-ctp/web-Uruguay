@@ -13,8 +13,8 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  title: 'CTP Real Estate | Parcelas en Uruguay',
-  description: 'Parcelas rurales en Uruguay. Inversión en naturaleza con financiamiento. CTP Real Estate.',
+  title: 'CTP Real Estate | Chacras en Uruguay',
+  description: 'Chacras rurales en Uruguay. Inversión en naturaleza con financiamiento. CTP Real Estate.',
   openGraph: {
     siteName: 'CTP Real Estate',
     locale: 'es_UY',

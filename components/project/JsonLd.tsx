@@ -8,7 +8,7 @@ export default function JsonLd({ proyecto }: Props) {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: `Parcelas ${proyecto.nombre}`,
+    name: `Chacras ${proyecto.nombre}`,
     description: proyecto.descripcion,
     offers: {
       '@type': 'Offer',

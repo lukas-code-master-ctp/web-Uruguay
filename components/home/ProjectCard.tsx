@@ -12,41 +12,52 @@ interface Props {
 
 export default function ProjectCard({ proyecto, index }: Props) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.7, delay: index * 0.15, ease: 'easeOut' }}
+    <motion.section
+      className="relative flex h-screen w-full items-end overflow-hidden"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: '-10%' }}
+      transition={{ duration: 0.8, ease: 'easeOut' }}
     >
-      <Link href={`/parcelas-${proyecto.slug}`} className="group block overflow-hidden bg-[#F5F5F5]">
-        <div className="relative aspect-[4/3] overflow-hidden">
-          <Image
-            src={proyecto.imagenes.hero}
-            alt={proyecto.nombre}
-            fill
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-black/20 transition-opacity duration-500 group-hover:bg-black/40" />
-          <div className="absolute inset-0 flex flex-col justify-end p-6 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-            <span className="inline-block border border-white px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase">
-              Ver proyecto
-            </span>
-          </div>
-        </div>
-        <div className="p-6">
-          <p className="mb-1 text-xs font-medium tracking-widest text-[#2E2E2E] uppercase">
-            {proyecto.ubicacion}
-          </p>
-          <h3 className="mb-2 text-xl font-light tracking-wider text-[#0A0A0A]">{proyecto.nombre}</h3>
-          <p className="text-sm text-[#2E2E2E]">
-            Desde{' '}
-            <span className="font-semibold text-[#0A0A0A]">
-              USD ${proyecto.precioDesde.toLocaleString('es-UY')}
-            </span>
-          </p>
-        </div>
-      </Link>
-    </motion.div>
+      {/* Imagen de fondo */}
+      <Image
+        src={proyecto.imagenes.hero}
+        alt={proyecto.nombre}
+        fill
+        priority={index === 0}
+        sizes="100vw"
+        className="object-cover"
+      />
+
+      {/* Overlay degradado */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+      {/* Número de proyecto */}
+      <span className="absolute top-10 right-10 text-xs font-light tracking-widest text-white/40">
+        {String(index + 1).padStart(2, '0')}
+      </span>
+
+      {/* Contenido */}
+      <div className="relative z-10 w-full px-8 pb-16 md:px-16 md:pb-20">
+        <p className="mb-3 text-xs font-medium tracking-widest text-white/60 uppercase">
+          {proyecto.ubicacion}
+        </p>
+        <h2 className="mb-4 text-5xl font-light tracking-wider text-white md:text-7xl">
+          {proyecto.nombre}
+        </h2>
+        <p className="mb-8 text-base font-light text-white/70">
+          Desde{' '}
+          <span className="font-semibold text-[#C6A665]">
+            USD ${proyecto.precioDesde.toLocaleString('es-UY')}
+          </span>
+        </p>
+        <Link
+          href={`/chacras-${proyecto.slug}`}
+          className="inline-block border border-white px-8 py-4 text-xs font-semibold tracking-widest text-white uppercase transition-all duration-300 hover:bg-white hover:text-[#0A0A0A]"
+        >
+          Ver proyecto
+        </Link>
+      </div>
+    </motion.section>
   )
 }

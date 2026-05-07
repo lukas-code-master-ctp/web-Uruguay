@@ -6,7 +6,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://ctprealestate.com'
 
   const proyectoUrls = proyectos.map((p) => ({
-    url: `${baseUrl}/parcelas-${p.slug}`,
+    url: `${baseUrl}/chacras-${p.slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.9,

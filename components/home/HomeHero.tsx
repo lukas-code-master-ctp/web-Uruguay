@@ -26,7 +26,7 @@ export default function HomeHero() {
       >
         <Logo variant="blanco" className="mb-2" />
         <p className="text-sm font-light tracking-widest text-white/80 uppercase">
-          Parcelas en Uruguay
+          Chacras en Uruguay
         </p>
       </motion.div>
 
