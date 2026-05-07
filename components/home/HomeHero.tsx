@@ -34,12 +34,12 @@ export default function HomeHero() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: 'easeOut' }}
         >
-          <Logo variant="blanco" className="h-20 w-auto md:h-28" />
+          <Logo variant="blanco" className="h-40 w-auto md:h-56" />
         </motion.div>
 
         {/* Eyebrow */}
         <motion.p
-          className="text-xs font-medium tracking-[0.3em] text-white/75 uppercase"
+          className="text-sm font-medium tracking-[0.3em] text-white/75 uppercase md:text-xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.8 }}
@@ -49,7 +49,7 @@ export default function HomeHero() {
 
         {/* Headline principal */}
         <motion.h1
-          className="max-w-3xl text-4xl font-semibold leading-tight tracking-wide text-white uppercase md:text-6xl lg:text-7xl"
+          className="max-w-2xl text-sm font-light leading-relaxed tracking-widest text-white/80 uppercase md:text-xl"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.55, duration: 0.9, ease: 'easeOut' }}
