@@ -155,8 +155,15 @@ export function parseConfig(rows: string[][]): SiteConfig {
 
 export const getProyectos = cache(async (): Promise<Proyecto[]> => {
   if (IS_DEV_NO_SHEET) return MOCK_PROYECTOS
-  const rows = await readSheet('proyectos!A2:O1000')
-  return rows.map(parseProyecto).filter((p) => p.activo)
+  try {
+    const rows = await readSheet('proyectos!A2:O1000')
+    const parsed = rows.map(parseProyecto).filter((p) => p.activo)
+    // Si la Sheet devuelve vacío, usar mock para no romper el sitio
+    return parsed.length > 0 ? parsed : MOCK_PROYECTOS
+  } catch (err) {
+    console.error('[getProyectos] Error fetching from Sheet, using mock data:', err)
+    return MOCK_PROYECTOS
+  }
 })
 
 export const getProyectoBySlug = cache(async (slug: string): Promise<Proyecto | null> => {
