@@ -2,6 +2,20 @@ import { cache } from 'react'
 import { readSheet } from './sheets'
 import type { Proyecto, SiteConfig } from './types'
 
+/**
+ * Acepta tanto una URL directa como el tag <iframe ...> completo.
+ * Si recibe HTML de iframe, extrae el atributo src.
+ */
+function parseEmbedValue(value: string | undefined): string | null {
+  if (!value?.trim()) return null
+  const v = value.trim()
+  if (v.startsWith('<iframe') || v.startsWith('<IFRAME')) {
+    const match = v.match(/src=["']([^"']+)["']/i)
+    return match?.[1] ?? null
+  }
+  return v
+}
+
 const NO_VIDEO_SLUGS = new Set(['tierras-del-este'])
 
 const GALLERY_COUNTS: Record<string, number> = {
@@ -135,8 +149,8 @@ export function parseProyecto(row: string[]): Proyecto {
     financiamientoTasas: row[12]?.split(',').map(Number) ?? [0.6, 0.7, 0.75],
     descripcionPreview: row[13] ?? '',
     activo: row[14]?.toUpperCase() === 'TRUE',
-    mapEmbed: row[15]?.trim() || null,
-    masterplanEmbed: row[16]?.trim() || null,
+    mapEmbed: parseEmbedValue(row[15]),
+    masterplanEmbed: parseEmbedValue(row[16]),
     imagenes: {
       hero: `/proyectos/${slug}/hero.jpg`,
       galeria,
