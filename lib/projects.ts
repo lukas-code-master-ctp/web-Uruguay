@@ -35,7 +35,7 @@ const MOCK_PROYECTOS: Proyecto[] = [
     imagenes: {
       hero: '/proyectos/la-martina/hero.jpg',
       galeria: Array.from({ length: 7 }, (_, i) => `/proyectos/la-martina/galeria-${i + 1}.jpg`),
-      plano: '/proyectos/la-martina/plano.jpg',
+      plano: 'https://drive.google.com/file/d/PLACEHOLDER_LA_MARTINA/preview',
       video: '/proyectos/la-martina/video.mp4',
     },
   },
@@ -81,7 +81,7 @@ const MOCK_PROYECTOS: Proyecto[] = [
     imagenes: {
       hero: '/proyectos/ama-jose-ignacio/hero.jpg',
       galeria: Array.from({ length: 7 }, (_, i) => `/proyectos/ama-jose-ignacio/galeria-${i + 1}.jpg`),
-      plano: '/proyectos/ama-jose-ignacio/plano.jpg',
+      plano: 'https://drive.google.com/file/d/PLACEHOLDER_AMA/preview',
       video: '/proyectos/ama-jose-ignacio/video.mp4',
     },
   },

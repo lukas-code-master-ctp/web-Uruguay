@@ -1,8 +1,6 @@
 'use client'
 
-import Image from 'next/image'
-import Zoom from 'react-medium-image-zoom'
-import 'react-medium-image-zoom/dist/styles.css'
+import { motion } from 'framer-motion'
 
 interface Props {
   src: string
@@ -10,19 +8,45 @@ interface Props {
 
 export default function Masterplan({ src }: Props) {
   return (
-    <section id="masterplan" className="bg-[#f5f5f5] px-6 py-16 md:px-16">
-      <p className="mb-8 text-xs font-semibold tracking-widest text-[#2E2E2E] uppercase">Plano del proyecto</p>
-      <Zoom>
-        <Image
+    <section id="masterplan" className="bg-[#0A0A0A]">
+
+      {/* Encabezado editorial */}
+      <div className="px-10 pt-20 pb-10 md:px-16 md:pt-24 md:pb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+        >
+          <p className="mb-4 text-[10px] font-medium tracking-[0.35em] text-[#C6A665] uppercase">
+            Masterplan
+          </p>
+          <h2 className="text-3xl font-light leading-snug tracking-wide text-white md:text-4xl lg:text-5xl">
+            Plano del proyecto
+          </h2>
+        </motion.div>
+      </div>
+
+      {/* Iframe a sangre */}
+      <motion.div
+        className="w-full overflow-hidden"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
+        <iframe
           src={src}
-          alt="Plano maestro"
-          width={1200}
-          height={800}
-          sizes="(max-width: 768px) 100vw, 80vw"
-          className="w-full cursor-zoom-in object-contain"
+          title="Masterplan del proyecto"
+          width="100%"
+          height="600"
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-popups-to-escape-sandbox"
+          className="block border-0"
         />
-      </Zoom>
-      <p className="mt-4 text-xs text-[#2E2E2E]">Haz clic en el plano para ampliar</p>
+      </motion.div>
+
     </section>
   )
 }
