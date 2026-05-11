@@ -1,50 +1,44 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 
-const STORAGE_KEY = (url: string) => `scroll:${url}`
+// Flag a nivel de módulo — sobrevive remounts del componente.
+// popstate se dispara ANTES de que la nueva página monte,
+// así que la nueva instancia del componente lo leerá correctamente.
+let pendingBack = false
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('popstate', () => { pendingBack = true })
+  history.scrollRestoration = 'manual'
+}
+
+const scrollKey = (url: string) => `scroll:${url}`
 
 export default function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const isBack   = useRef(false)
-  const prevPath = useRef(pathname)
 
-  // Tomar control total del scroll — desactivar restauración automática del browser
+  // Ejecuta una sola vez al montar (= cada vez que carga una página nueva)
   useEffect(() => {
-    if ('scrollRestoration' in history) {
-      history.scrollRestoration = 'manual'
-    }
-  }, [])
+    const frame = requestAnimationFrame(() => {
+      if (pendingBack) {
+        pendingBack = false
+        const saved = sessionStorage.getItem(scrollKey(pathname))
+        window.scrollTo({ top: saved ? parseInt(saved, 10) : 0, behavior: 'instant' })
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+      }
+    })
+    return () => cancelAnimationFrame(frame)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Detectar back/forward antes del re-render
-  useEffect(() => {
-    const onPopstate = () => { isBack.current = true }
-    window.addEventListener('popstate', onPopstate)
-    return () => window.removeEventListener('popstate', onPopstate)
-  }, [])
-
-  // Guardar posición en tiempo real
+  // Guarda la posición de scroll en tiempo real
   useEffect(() => {
     const save = () =>
-      sessionStorage.setItem(STORAGE_KEY(pathname), String(window.scrollY))
+      sessionStorage.setItem(scrollKey(pathname), String(window.scrollY))
     window.addEventListener('scroll', save, { passive: true })
     return () => window.removeEventListener('scroll', save)
-  }, [pathname])
-
-  // Resetear o restaurar scroll cuando cambia la ruta
-  useEffect(() => {
-    if (prevPath.current === pathname) return
-    prevPath.current = pathname
-
-    if (isBack.current) {
-      const saved = sessionStorage.getItem(STORAGE_KEY(pathname))
-      window.scrollTo({ top: saved ? parseInt(saved, 10) : 0, behavior: 'instant' })
-      isBack.current = false
-    } else {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
-    }
   }, [pathname])
 
   return (
