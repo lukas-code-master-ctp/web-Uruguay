@@ -89,7 +89,7 @@ export default function NearbyPoints({ puntos, nombre, ubicacion, coordenadas }:
             height="480"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            sandbox="allow-scripts allow-same-origin"
+            sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-popups-to-escape-sandbox"
             className="block"
           />
         </div>
