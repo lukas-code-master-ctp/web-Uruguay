@@ -58,12 +58,12 @@ export default async function ProyectoPage({ params }: Props) {
       <ProjectHero proyecto={proyecto} />
 
       {/* Nav de secciones — sticky bajo el hero */}
-      <ProjectSectionNav tieneMasterplan={!!proyecto.imagenes.plano} />
+      <ProjectSectionNav tieneMasterplan={!!proyecto.masterplanEmbed} />
 
       {/* Secciones */}
       <ProjectIntro proyecto={proyecto} />
-      <NearbyPoints puntos={proyecto.puntosCercanos} nombre={proyecto.nombre} ubicacion={proyecto.ubicacion} coordenadas={proyecto.coordenadas} />
-      {proyecto.imagenes.plano && <Masterplan src={proyecto.imagenes.plano} />}
+      <NearbyPoints puntos={proyecto.puntosCercanos} nombre={proyecto.nombre} ubicacion={proyecto.ubicacion} mapEmbed={proyecto.mapEmbed} />
+      {proyecto.masterplanEmbed && <Masterplan src={proyecto.masterplanEmbed} />}
       <Gallery imagenes={proyecto.imagenes.galeria} />
       <FinancingCalc
         precioBase={proyecto.precioDesde}

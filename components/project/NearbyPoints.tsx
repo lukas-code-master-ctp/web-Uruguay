@@ -6,22 +6,10 @@ interface Props {
   puntos: string[]
   nombre: string
   ubicacion: string
-  coordenadas: string
+  mapEmbed: string | null
 }
 
-function buildMapSrc(coordenadas: string): string | null {
-  const parts = coordenadas.split(',')
-  if (parts.length !== 2) return null
-  const lat = parseFloat(parts[0])
-  const lng = parseFloat(parts[1])
-  if (!isFinite(lat) || !isFinite(lng)) return null
-  if (lat < -90 || lat > 90 || lng < -180 || lng > 180) return null
-  return `https://maps.google.com/maps?q=${lat},${lng}&z=14&output=embed`
-}
-
-export default function NearbyPoints({ puntos, nombre, ubicacion, coordenadas }: Props) {
-  const mapSrc = buildMapSrc(coordenadas)
-
+export default function NearbyPoints({ puntos, nombre, ubicacion, mapEmbed }: Props) {
   return (
     <section id="ubicacion">
 
@@ -80,17 +68,17 @@ export default function NearbyPoints({ puntos, nombre, ubicacion, coordenadas }:
       </div>
 
       {/* Mapa a sangre */}
-      {mapSrc && (
+      {mapEmbed && (
         <div className="w-full overflow-hidden">
           <iframe
-            src={mapSrc}
+            src={mapEmbed}
             title={`Ubicación ${nombre}`}
             width="100%"
             height="480"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-popups-to-escape-sandbox"
-            className="block"
+            className="block border-0"
           />
         </div>
       )}

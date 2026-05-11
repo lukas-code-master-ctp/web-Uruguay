@@ -28,6 +28,8 @@ const MOCK_PROYECTOS: Proyecto[] = [
     amenities: ['Portón controlado', 'Caminería interna', 'Agua potable', 'Energía eléctrica'],
     puntosCercanos: ['Playa a 500m', 'José Ignacio a 8km', 'Punta del Este a 35km', 'Montevideo a 180km'],
     coordenadas: '-34.8412,-54.6721',
+    mapEmbed: null,
+    masterplanEmbed: null,
     financiamientoInicial: 40,
     financiamientoCuotas: [12, 24, 36],
     financiamientoTasas: [0.6, 0.7, 0.75],
@@ -35,7 +37,6 @@ const MOCK_PROYECTOS: Proyecto[] = [
     imagenes: {
       hero: '/proyectos/la-martina/hero.jpg',
       galeria: Array.from({ length: 7 }, (_, i) => `/proyectos/la-martina/galeria-${i + 1}.jpg`),
-      plano: 'https://drive.google.com/file/d/PLACEHOLDER_LA_MARTINA/preview',
       video: '/proyectos/la-martina/video.mp4',
     },
   },
@@ -51,6 +52,8 @@ const MOCK_PROYECTOS: Proyecto[] = [
     amenities: ['Acceso controlado', 'Caminería interna', 'Agua potable'],
     puntosCercanos: ['José Ignacio a 10km', 'Laguna Garzón a 15km', 'Punta del Este a 45km'],
     coordenadas: '-34.7900,-54.5800',
+    mapEmbed: null,
+    masterplanEmbed: null,
     financiamientoInicial: 40,
     financiamientoCuotas: [12, 24, 36],
     financiamientoTasas: [0.6, 0.7, 0.75],
@@ -58,7 +61,6 @@ const MOCK_PROYECTOS: Proyecto[] = [
     imagenes: {
       hero: '/proyectos/aires-manantiales/hero.jpg',
       galeria: Array.from({ length: 6 }, (_, i) => `/proyectos/aires-manantiales/galeria-${i + 1}.jpg`),
-      plano: null,
       video: '/proyectos/aires-manantiales/video.mp4',
     },
   },
@@ -74,6 +76,8 @@ const MOCK_PROYECTOS: Proyecto[] = [
     amenities: ['Portón controlado', 'Caminería pavimentada', 'Agua potable', 'Iluminación'],
     puntosCercanos: ['Centro José Ignacio a 5km', 'Playa a 3km', 'Punta del Este a 30km'],
     coordenadas: '-34.8600,-54.6400',
+    mapEmbed: null,
+    masterplanEmbed: null,
     financiamientoInicial: 40,
     financiamientoCuotas: [12, 24, 36],
     financiamientoTasas: [0.6, 0.7, 0.75],
@@ -81,7 +85,6 @@ const MOCK_PROYECTOS: Proyecto[] = [
     imagenes: {
       hero: '/proyectos/ama-jose-ignacio/hero.jpg',
       galeria: Array.from({ length: 7 }, (_, i) => `/proyectos/ama-jose-ignacio/galeria-${i + 1}.jpg`),
-      plano: 'https://drive.google.com/file/d/PLACEHOLDER_AMA/preview',
       video: '/proyectos/ama-jose-ignacio/video.mp4',
     },
   },
@@ -97,6 +100,8 @@ const MOCK_PROYECTOS: Proyecto[] = [
     amenities: ['Acceso asfaltado', 'Agua potable', 'Electricidad'],
     puntosCercanos: ['Rocha a 20km', 'La Paloma a 35km', 'Montevideo a 220km'],
     coordenadas: '-34.4800,-54.3400',
+    mapEmbed: null,
+    masterplanEmbed: null,
     financiamientoInicial: 40,
     financiamientoCuotas: [12, 24, 36],
     financiamientoTasas: [0.6, 0.7, 0.75],
@@ -104,7 +109,6 @@ const MOCK_PROYECTOS: Proyecto[] = [
     imagenes: {
       hero: '/proyectos/tierras-del-este/hero.jpg',
       galeria: Array.from({ length: 8 }, (_, i) => `/proyectos/tierras-del-este/galeria-${i + 1}.jpg`),
-      plano: null,
       video: null,
     },
   },
@@ -114,10 +118,6 @@ export function parseProyecto(row: string[]): Proyecto {
   const slug = row[0]
   const count = GALLERY_COUNTS[slug] ?? 6
   const galeria = Array.from({ length: count }, (_, i) => `/proyectos/${slug}/galeria-${i + 1}.jpg`)
-
-  const hasPlano =
-    slug === 'la-martina' ||
-    slug === 'ama-jose-ignacio'
 
   return {
     slug,
@@ -135,10 +135,11 @@ export function parseProyecto(row: string[]): Proyecto {
     financiamientoTasas: row[12]?.split(',').map(Number) ?? [0.6, 0.7, 0.75],
     descripcionPreview: row[13] ?? '',
     activo: row[14]?.toUpperCase() === 'TRUE',
+    mapEmbed: row[15]?.trim() || null,
+    masterplanEmbed: row[16]?.trim() || null,
     imagenes: {
       hero: `/proyectos/${slug}/hero.jpg`,
       galeria,
-      plano: hasPlano ? `/proyectos/${slug}/plano.jpg` : null,
       video: NO_VIDEO_SLUGS.has(slug) ? null : `/proyectos/${slug}/video.mp4`,
     },
   }
@@ -156,7 +157,7 @@ export function parseConfig(rows: string[][]): SiteConfig {
 export const getProyectos = cache(async (): Promise<Proyecto[]> => {
   if (IS_DEV_NO_SHEET) return MOCK_PROYECTOS
   try {
-    const rows = await readSheet('proyectos!A2:O1000')
+    const rows = await readSheet('proyectos!A2:Q1000')
     const parsed = rows.map(parseProyecto).filter((p) => p.activo)
     // Si la Sheet devuelve vacío, usar mock para no romper el sitio
     return parsed.length > 0 ? parsed : MOCK_PROYECTOS

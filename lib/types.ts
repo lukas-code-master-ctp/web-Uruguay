@@ -10,6 +10,8 @@ export interface Proyecto {
   amenities: string[]
   puntosCercanos: string[]
   coordenadas: string
+  mapEmbed: string | null
+  masterplanEmbed: string | null
   financiamientoInicial: number
   financiamientoCuotas: number[]
   financiamientoTasas: number[]
@@ -17,7 +19,6 @@ export interface Proyecto {
   imagenes: {
     hero: string
     galeria: string[]
-    plano: string | null
     video: string | null
   }
 }
