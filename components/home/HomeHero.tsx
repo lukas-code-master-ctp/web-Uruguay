@@ -1,7 +1,6 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Link from 'next/link'
 import Logo from '@/components/ui/Logo'
 
 export default function HomeHero() {
@@ -63,12 +62,14 @@ export default function HomeHero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.9, duration: 0.8 }}
         >
-          <Link
-            href="#proyectos"
-            className="mt-2 inline-block rounded-full border border-white/30 bg-white/15 px-10 py-4 text-xs font-semibold tracking-widest text-white uppercase backdrop-blur-md transition-all duration-300 hover:bg-white/30"
+          <button
+            onClick={() => {
+              document.getElementById('proyectos')?.scrollIntoView({ behavior: 'smooth' })
+            }}
+            className="mt-2 rounded-full border border-white/30 bg-white/15 px-10 py-4 text-xs font-semibold tracking-widest text-white uppercase backdrop-blur-md transition-all duration-300 hover:bg-white/30"
           >
             Ver proyectos
-          </Link>
+          </button>
         </motion.div>
       </motion.div>
 

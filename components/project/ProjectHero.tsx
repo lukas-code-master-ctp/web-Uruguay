@@ -45,9 +45,7 @@ export default function ProjectHero({ proyecto }: Props) {
 
         <button
           onClick={() => {
-            const el = document.getElementById('galeria')
-            if (!el) return
-            window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 64, behavior: 'smooth' })
+            document.getElementById('introduccion')?.scrollIntoView({ behavior: 'smooth' })
           }}
           className="mt-2 rounded-full border border-white/30 bg-white/15 px-10 py-4 text-xs font-semibold tracking-widest text-white uppercase backdrop-blur-md transition-all duration-300 hover:bg-white/30"
         >

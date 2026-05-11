@@ -5,14 +5,12 @@ import { motion } from 'framer-motion'
 import Logo from '@/components/ui/Logo'
 
 const SECCIONES = [
-  { id: 'introduccion', label: 'Introducción'  },
-  { id: 'ubicacion',    label: 'Ubicación'     },
-  { id: 'ecosistema',   label: 'Ecosistema'    },
-  { id: 'galeria',      label: 'Galería'       },
-  { id: 'masterplan',   label: 'Masterplan'    },
-  { id: 'mapa',         label: 'Mapa'          },
-  { id: 'calculadora',  label: 'Financiamiento'},
-  { id: 'contacto',     label: 'Contacto'      },
+  { id: 'introduccion', label: 'Introducción',   visible: true  },
+  { id: 'ubicacion',    label: 'Ubicación',      visible: true  },
+  { id: 'masterplan',   label: 'Masterplan',     visible: true  },
+  { id: 'galeria',      label: 'Galería',        visible: true  },
+  { id: 'calculadora',  label: 'Financiamiento', visible: true  },
+  { id: 'contacto',     label: 'Contacto',       visible: false }, // spy only
 ]
 
 interface Props {
@@ -56,9 +54,12 @@ export default function ProjectSectionNav({ tieneMasterplan }: Props) {
   const navRef = useRef<HTMLDivElement>(null)
   const rafRef = useRef<number>(0)
 
-  const secciones = SECCIONES.filter(
+  // Todas las secciones para el scroll-spy (incluye contacto)
+  const seccionesSpy = SECCIONES.filter(
     (s) => s.id !== 'masterplan' || tieneMasterplan
   )
+  // Solo las visibles para renderizar en el nav
+  const secciones = seccionesSpy.filter((s) => s.visible)
 
   /** Comprueba el color detrás del nav y actualiza isLight */
   const detectBg = useCallback(() => {
@@ -92,7 +93,7 @@ export default function ProjectSectionNav({ tieneMasterplan }: Props) {
   // Scroll-spy
   useEffect(() => {
     const observers: IntersectionObserver[] = []
-    secciones.forEach(({ id }) => {
+    seccionesSpy.forEach(({ id }) => {
       const el = document.getElementById(id)
       if (!el) return
       const obs = new IntersectionObserver(
@@ -186,7 +187,7 @@ export default function ProjectSectionNav({ tieneMasterplan }: Props) {
 
           {/* Botón Consultar */}
           <button
-            onClick={() => scrollTo('contacto')}
+            onClick={() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })}
             className={`hidden md:inline-block flex-shrink-0 rounded-full border px-5 py-2 text-[10px] font-semibold tracking-widest uppercase backdrop-blur-md transition-all duration-300 ${btnCta}`}
           >
             Consultar

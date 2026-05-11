@@ -3,15 +3,11 @@ import { notFound } from 'next/navigation'
 import ProjectHero from '@/components/project/ProjectHero'
 import ProjectSectionNav from '@/components/project/ProjectSectionNav'
 import ProjectIntro from '@/components/project/ProjectIntro'
-import ValueProps from '@/components/project/ValueProps'
 import Gallery from '@/components/project/Gallery'
 import Masterplan from '@/components/project/Masterplan'
-import Amenities from '@/components/project/Amenities'
 import NearbyPoints from '@/components/project/NearbyPoints'
-import MapEmbed from '@/components/project/MapEmbed'
 import FinancingCalc from '@/components/project/FinancingCalc'
 import ContactForm from '@/components/project/ContactForm'
-import StickyContact from '@/components/shared/StickyContact'
 import PageTransition from '@/components/shared/PageTransition'
 import Footer from '@/components/shared/Footer'
 import JsonLd from '@/components/project/JsonLd'
@@ -66,12 +62,9 @@ export default async function ProyectoPage({ params }: Props) {
 
       {/* Secciones */}
       <ProjectIntro proyecto={proyecto} />
-      <ValueProps destacados={proyecto.destacados} />
-      <NearbyPoints puntos={proyecto.puntosCercanos} nombre={proyecto.nombre} ubicacion={proyecto.ubicacion} />
-      <Amenities amenities={proyecto.amenities} />
-      <Gallery imagenes={proyecto.imagenes.galeria} />
+      <NearbyPoints puntos={proyecto.puntosCercanos} nombre={proyecto.nombre} ubicacion={proyecto.ubicacion} coordenadas={proyecto.coordenadas} />
       {proyecto.imagenes.plano && <Masterplan src={proyecto.imagenes.plano} />}
-      <MapEmbed coordenadas={proyecto.coordenadas} nombre={proyecto.nombre} />
+      <Gallery imagenes={proyecto.imagenes.galeria} />
       <FinancingCalc
         precioBase={proyecto.precioDesde}
         cuotas={proyecto.financiamientoCuotas}
@@ -79,7 +72,6 @@ export default async function ProyectoPage({ params }: Props) {
       />
       <ContactForm proyectoSlug={proyecto.slug} proyectoNombre={proyecto.nombre} />
 
-      <StickyContact />
       <Footer />
     </PageTransition>
   )
