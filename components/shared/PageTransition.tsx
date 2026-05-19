@@ -34,7 +34,10 @@ export default function PageTransition({ children }: { children: React.ReactNode
   const pathname = usePathname()
   const rafIds = useRef<number[]>([])
 
-  // Ejecuta una sola vez al montar (= cada vez que carga una página nueva)
+  // Corre en cada cambio de pathname.
+  // CRÍTICO: depender de [pathname] (no de []) porque Next.js App Router
+  // cachea el árbol de componentes y no siempre remonta al volver a una
+  // página visitada antes.
   useEffect(() => {
     // Doble RAF: el primero deja que Lenis se inicialice/sincronice,
     // el segundo asegura que nuestro scroll corre después de cualquier scroll automático.
@@ -56,7 +59,7 @@ export default function PageTransition({ children }: { children: React.ReactNode
       rafIds.current.forEach(cancelAnimationFrame)
       rafIds.current = []
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [pathname])
 
   // Guarda la posición de scroll en tiempo real
   useEffect(() => {
