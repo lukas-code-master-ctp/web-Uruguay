@@ -1,13 +1,11 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { getLenis } from './LenisProvider'
 
 // Flag a nivel de módulo — sobrevive remounts del componente.
-// popstate se dispara ANTES de que la nueva página monte,
-// así que la nueva instancia del componente lo leerá correctamente.
 let pendingBack = false
 
 if (typeof window !== 'undefined') {
@@ -18,45 +16,76 @@ if (typeof window !== 'undefined') {
 const scrollKey = (url: string) => `scroll:${url}`
 
 /**
- * Scroll inmediato (sin animación) compatible con Lenis.
- * Si Lenis está activo, lo usa; si no, cae a window.scrollTo.
+ * Reset agresivo del scroll, forzando el estado interno de Lenis
+ * y el de la ventana, eliminando cualquier animación en curso.
  */
-function instantScrollTo(top: number): void {
+function forceScrollTo(top: number): void {
+  // 1. Reset nativo del browser (cubre el caso sin Lenis o donde Lenis
+  //    todavía no manejó el cambio).
+  window.scrollTo({ top, left: 0, behavior: 'instant' })
+  document.documentElement.scrollTop = top
+  document.body.scrollTop = top
+
+  // 2. Reset del estado interno de Lenis.
   const lenis = getLenis()
   if (lenis) {
-    lenis.scrollTo(top, { immediate: true, force: true })
-  } else {
-    window.scrollTo({ top, left: 0, behavior: 'instant' })
+    // Detener cualquier animación que estuviera en curso.
+    if (typeof lenis.stop === 'function') lenis.stop()
+
+    // Setear las propiedades internas directamente (Lenis las expone)
+    // para que el próximo frame del RAF no "tire" hacia el target viejo.
+    try {
+      lenis.animatedScroll = top
+      lenis.targetScroll = top
+    } catch {}
+
+    // Llamada explícita inmediata.
+    lenis.scrollTo(top, { immediate: true, force: true, lock: false })
+
+    // Re-iniciar el RAF loop.
+    if (typeof lenis.start === 'function') lenis.start()
   }
 }
+
+const useIsomorphicLayoutEffect =
+  typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 export default function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const rafIds = useRef<number[]>([])
+  const previousPathname = useRef<string | null>(null)
 
-  // Corre en cada cambio de pathname.
-  // CRÍTICO: depender de [pathname] (no de []) porque Next.js App Router
-  // cachea el árbol de componentes y no siempre remonta al volver a una
-  // página visitada antes.
-  useEffect(() => {
-    // Doble RAF: el primero deja que Lenis se inicialice/sincronice,
-    // el segundo asegura que nuestro scroll corre después de cualquier scroll automático.
-    const id1 = requestAnimationFrame(() => {
-      const id2 = requestAnimationFrame(() => {
-        if (pendingBack) {
-          pendingBack = false
-          const saved = sessionStorage.getItem(scrollKey(pathname))
-          instantScrollTo(saved ? parseInt(saved, 10) : 0)
-        } else {
-          instantScrollTo(0)
-        }
-      })
-      rafIds.current.push(id2)
-    })
-    rafIds.current.push(id1)
+  // useLayoutEffect: corre ANTES del primer paint del nuevo path.
+  // Esto cubre el caso del cache de App Router donde el componente no remonta.
+  useIsomorphicLayoutEffect(() => {
+    const isFirstRun = previousPathname.current === null
+    const pathChanged = previousPathname.current !== pathname
+    previousPathname.current = pathname
+
+    if (!isFirstRun && !pathChanged) return
+
+    // Reset inmediato — antes del paint.
+    if (pendingBack) {
+      pendingBack = false
+      const saved = sessionStorage.getItem(scrollKey(pathname))
+      forceScrollTo(saved ? parseInt(saved, 10) : 0)
+    } else {
+      forceScrollTo(0)
+    }
+
+    // Resets adicionales en frames posteriores para sobreescribir
+    // cualquier scroll que Next.js o Lenis intenten aplicar después.
+    const targets = pendingBack
+      ? parseInt(sessionStorage.getItem(scrollKey(pathname)) ?? '0', 10)
+      : 0
+
+    for (const delay of [0, 50, 150, 300]) {
+      const id = window.setTimeout(() => forceScrollTo(targets), delay)
+      rafIds.current.push(id)
+    }
 
     return () => {
-      rafIds.current.forEach(cancelAnimationFrame)
+      rafIds.current.forEach(clearTimeout)
       rafIds.current = []
     }
   }, [pathname])
@@ -66,7 +95,18 @@ export default function PageTransition({ children }: { children: React.ReactNode
     const save = () =>
       sessionStorage.setItem(scrollKey(pathname), String(window.scrollY))
     window.addEventListener('scroll', save, { passive: true })
-    return () => window.removeEventListener('scroll', save)
+    // Lenis también expone su propio evento — escucharlo en caso de que
+    // los eventos nativos no se disparen.
+    const lenis = getLenis()
+    if (lenis && typeof lenis.on === 'function') {
+      lenis.on('scroll', save)
+    }
+    return () => {
+      window.removeEventListener('scroll', save)
+      if (lenis && typeof lenis.off === 'function') {
+        lenis.off('scroll', save)
+      }
+    }
   }, [pathname])
 
   return (
