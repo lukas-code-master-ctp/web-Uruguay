@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import InteractiveEmbed from '@/components/shared/InteractiveEmbed'
 
 interface Props {
   puntos: string[]
@@ -69,18 +70,11 @@ export default function NearbyPoints({ puntos, nombre, ubicacion, mapEmbed }: Pr
 
       {/* Mapa a sangre */}
       {mapEmbed && (
-        <div className="w-full overflow-hidden">
-          <iframe
-            src={mapEmbed}
-            title={`Ubicación ${nombre}`}
-            width="100%"
-            height="480"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-popups-to-escape-sandbox"
-            className="block border-0"
-          />
-        </div>
+        <InteractiveEmbed
+          src={mapEmbed}
+          title={`Ubicación ${nombre}`}
+          height={480}
+        />
       )}
 
     </section>
