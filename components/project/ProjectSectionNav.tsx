@@ -51,6 +51,7 @@ export default function ProjectSectionNav({ tieneMasterplan }: Props) {
   const [visible, setVisible]   = useState(false)
   const [activeId, setActiveId] = useState('introduccion')
   const [isLight, setIsLight]   = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const navRef = useRef<HTMLDivElement>(null)
   const rafRef = useRef<number>(0)
 
@@ -112,7 +113,7 @@ export default function ProjectSectionNav({ tieneMasterplan }: Props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tieneMasterplan, detectBg])
 
-  // Centrar link activo en mobile
+  // Centrar link activo en desktop (la lista horizontal solo existe en md+)
   useEffect(() => {
     const nav = navRef.current
     if (!nav) return
@@ -124,7 +125,16 @@ export default function ProjectSectionNav({ tieneMasterplan }: Props) {
     })
   }, [activeId])
 
+  // Cierra el menú mobile al click fuera
+  useEffect(() => {
+    if (!menuOpen) return
+    const close = () => setMenuOpen(false)
+    window.addEventListener('click', close)
+    return () => window.removeEventListener('click', close)
+  }, [menuOpen])
+
   const scrollTo = (id: string) => {
+    setMenuOpen(false)
     const el = document.getElementById(id)
     if (!el) return
     window.scrollTo({
@@ -143,6 +153,8 @@ export default function ProjectSectionNav({ tieneMasterplan }: Props) {
   const btnCta       = isLight
     ? 'border-black/20 bg-black/5 text-black hover:bg-black/10'
     : 'border-white/30 bg-white/15 text-white hover:bg-white/30'
+  const hamburgerBar  = isLight ? 'bg-black' : 'bg-white'
+  const mobileDivider = isLight ? 'border-black/10' : 'border-white/15'
 
   return (
     <nav
@@ -160,11 +172,14 @@ export default function ProjectSectionNav({ tieneMasterplan }: Props) {
           {/* Logo */}
           <div className="flex flex-shrink-0 items-center gap-4">
             <Logo variant={isLight ? 'negro' : 'blanco'} className="h-10 w-auto" />
-            <span className={`h-5 w-px flex-shrink-0 ${isLight ? 'bg-black/15' : 'bg-white/20'}`} />
+            <span className={`hidden h-5 w-px flex-shrink-0 md:block ${isLight ? 'bg-black/15' : 'bg-white/20'}`} />
           </div>
 
-          {/* Secciones */}
-          <div ref={navRef} className="flex flex-1 items-center gap-1 overflow-x-auto scrollbar-hide">
+          {/* Secciones (desktop) */}
+          <div
+            ref={navRef}
+            className="hidden flex-1 items-center gap-1 overflow-x-auto scrollbar-hide md:flex"
+          >
             {secciones.map(({ id, label }) => (
               <button
                 key={id}
@@ -185,14 +200,57 @@ export default function ProjectSectionNav({ tieneMasterplan }: Props) {
             ))}
           </div>
 
-          {/* Botón Consultar */}
+          {/* Spacer mobile para empujar el hamburger a la derecha */}
+          <div className="flex-1 md:hidden" />
+
+          {/* Botón Consultar (desktop) */}
           <button
             onClick={() => document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })}
             className={`hidden md:inline-block flex-shrink-0 rounded-full border px-5 py-2 text-[10px] font-semibold tracking-widest uppercase backdrop-blur-md transition-all duration-300 ${btnCta}`}
           >
             Consultar
           </button>
+
+          {/* Hamburger (mobile) */}
+          <button
+            className="flex flex-col gap-1.5 p-1 md:hidden"
+            onClick={(e) => { e.stopPropagation(); setMenuOpen((v) => !v) }}
+            aria-label="Menú"
+            aria-expanded={menuOpen}
+          >
+            <span className={`block h-px w-5 transition-transform duration-300 ${hamburgerBar} ${menuOpen ? 'translate-y-2 rotate-45' : ''}`} />
+            <span className={`block h-px w-5 transition-opacity duration-300 ${hamburgerBar} ${menuOpen ? 'opacity-0' : ''}`} />
+            <span className={`block h-px w-5 transition-transform duration-300 ${hamburgerBar} ${menuOpen ? '-translate-y-2 -rotate-45' : ''}`} />
+          </button>
         </div>
+
+        {/* Menú desplegable mobile */}
+        {menuOpen && (
+          <div
+            className={`mt-4 flex flex-col gap-4 border-t pt-4 md:hidden ${mobileDivider}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {secciones.map(({ id, label }) => (
+              <button
+                key={id}
+                onClick={() => scrollTo(id)}
+                className="text-left text-xs font-medium tracking-[0.2em] uppercase transition-colors"
+                style={{ color: activeId === id ? textActive : textInactive }}
+              >
+                {label}
+              </button>
+            ))}
+            <button
+              onClick={() => {
+                setMenuOpen(false)
+                document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              className={`mt-1 self-start rounded-full border px-5 py-2 text-[10px] font-semibold tracking-widest uppercase backdrop-blur-md transition-all ${btnCta}`}
+            >
+              Consultar
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   )
