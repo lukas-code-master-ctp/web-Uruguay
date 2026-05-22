@@ -14,6 +14,7 @@ export const revalidate = 10
 export default async function MapaPage() {
   const proyectos = await getProyectos()
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ''
+  const mapId = process.env.NEXT_PUBLIC_GOOGLE_MAPS_ID ?? ''
 
   return (
     <PageTransition>
@@ -31,7 +32,7 @@ export default async function MapaPage() {
         </header>
 
         <section className="mx-auto max-w-7xl px-6 md:px-10">
-          <MapaInteractivo proyectos={proyectos} apiKey={apiKey} />
+          <MapaInteractivo proyectos={proyectos} apiKey={apiKey} mapId={mapId} />
         </section>
       </main>
       <Footer />

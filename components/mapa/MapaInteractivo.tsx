@@ -9,6 +9,7 @@ import type { Proyecto } from '@/lib/types'
 interface Props {
   proyectos: Proyecto[]
   apiKey: string
+  mapId: string
 }
 
 interface ProyectoConCoordenadas extends Proyecto {
@@ -34,7 +35,7 @@ function calcularCentro(proyectos: ProyectoConCoordenadas[]): { lat: number; lng
   return { lat: sum.lat / proyectos.length, lng: sum.lng / proyectos.length }
 }
 
-export default function MapaInteractivo({ proyectos, apiKey }: Props) {
+export default function MapaInteractivo({ proyectos, apiKey, mapId }: Props) {
   const proyectosConCoords: ProyectoConCoordenadas[] = useMemo(
     () =>
       proyectos
@@ -49,7 +50,10 @@ export default function MapaInteractivo({ proyectos, apiKey }: Props) {
   const center = useMemo(() => calcularCentro(proyectosConCoords), [proyectosConCoords])
   const [activeSlug, setActiveSlug] = useState<string | null>(null)
 
-  if (!apiKey) {
+  if (!apiKey || !mapId) {
+    const missing: string[] = []
+    if (!apiKey) missing.push('NEXT_PUBLIC_GOOGLE_MAPS_API_KEY')
+    if (!mapId) missing.push('NEXT_PUBLIC_GOOGLE_MAPS_ID')
     return (
       <div className="flex h-[70vh] w-full items-center justify-center bg-[#F5F0E8] text-center">
         <div className="max-w-md px-6">
@@ -60,7 +64,14 @@ export default function MapaInteractivo({ proyectos, apiKey }: Props) {
             Mapa no disponible
           </h3>
           <p className="mt-3 text-sm text-[#0A0A0A]/60">
-            Falta configurar la variable de entorno <code className="rounded bg-black/5 px-1 py-0.5 font-mono text-xs">NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code> en Vercel.
+            Falta configurar {missing.length === 1 ? 'la variable' : 'las variables'} de entorno{' '}
+            {missing.map((v, i) => (
+              <span key={v}>
+                <code className="rounded bg-black/5 px-1 py-0.5 font-mono text-xs">{v}</code>
+                {i < missing.length - 1 ? ' y ' : ''}
+              </span>
+            ))}{' '}
+            en Vercel.
           </p>
         </div>
       </div>
@@ -75,7 +86,7 @@ export default function MapaInteractivo({ proyectos, apiKey }: Props) {
         <Map
           defaultCenter={center}
           defaultZoom={10}
-          mapId="ctp-mapa-proyectos"
+          mapId={mapId}
           gestureHandling="greedy"
           disableDefaultUI={false}
           mapTypeControl={false}
