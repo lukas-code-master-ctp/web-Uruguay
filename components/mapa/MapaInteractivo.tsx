@@ -17,13 +17,52 @@ interface ProyectoConCoordenadas extends Proyecto {
   lng: number
 }
 
-function parseCoordenadas(coordenadas: string): { lat: number; lng: number } | null {
-  const parts = coordenadas.split(',').map((s) => s.trim())
-  if (parts.length !== 2) return null
-  const lat = parseFloat(parts[0])
-  const lng = parseFloat(parts[1])
-  if (!isFinite(lat) || !isFinite(lng)) return null
-  return { lat, lng }
+/**
+ * Acepta múltiples formatos:
+ *  - Decimal:  "-34.8412,-54.6721"  |  "-34.8412 -54.6721"
+ *  - DMS:      "34°53'46.1\"S 55°01'27.4\"W"  |  "34°53'46.1\"S, 55°01'27.4\"W"
+ */
+function parseCoordenadas(coordenadas: string | null | undefined): { lat: number; lng: number } | null {
+  if (!coordenadas) return null
+  const raw = coordenadas.trim()
+  if (!raw) return null
+
+  // 1. Intento formato DMS — busca dos triplete de grados/minutos/segundos con dirección.
+  const dmsRegex = /(\d+(?:\.\d+)?)[°º]\s*(\d+(?:\.\d+)?)['′]\s*(\d+(?:\.\d+)?)["″]\s*([NSEWnsew])/g
+  const dmsMatches = [...raw.matchAll(dmsRegex)]
+  if (dmsMatches.length === 2) {
+    const [latMatch, lngMatch] = dmsMatches
+    const lat = dmsToDecimal(latMatch[1], latMatch[2], latMatch[3], latMatch[4])
+    const lng = dmsToDecimal(lngMatch[1], lngMatch[2], lngMatch[3], lngMatch[4])
+    if (isValidLatLng(lat, lng)) return { lat, lng }
+  }
+
+  // 2. Fallback: formato decimal — separadores coma o espacio.
+  const parts = raw.split(/[,\s]+/).filter(Boolean)
+  if (parts.length === 2) {
+    const lat = parseFloat(parts[0])
+    const lng = parseFloat(parts[1])
+    if (isValidLatLng(lat, lng)) return { lat, lng }
+  }
+
+  return null
+}
+
+function dmsToDecimal(deg: string, min: string, sec: string, dir: string): number {
+  const d = parseFloat(deg)
+  const m = parseFloat(min)
+  const s = parseFloat(sec)
+  const decimal = d + m / 60 + s / 3600
+  const sign = /[SWsw]/.test(dir) ? -1 : 1
+  return decimal * sign
+}
+
+function isValidLatLng(lat: number, lng: number): boolean {
+  return (
+    isFinite(lat) && isFinite(lng) &&
+    lat >= -90 && lat <= 90 &&
+    lng >= -180 && lng <= 180
+  )
 }
 
 function calcularCentro(proyectos: ProyectoConCoordenadas[]): { lat: number; lng: number } {
