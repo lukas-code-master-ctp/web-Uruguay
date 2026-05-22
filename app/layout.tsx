@@ -26,7 +26,10 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const [config, proyectos] = await Promise.all([getSiteConfig(), getProyectos()])
 
-  const navProyectos = proyectos.map((p) => ({ slug: p.slug, nombre: p.nombre }))
+  // Solo proyectos activos aparecen en el nav — los SOLD OUT no son linkeables.
+  const navProyectos = proyectos
+    .filter((p) => p.activo)
+    .map((p) => ({ slug: p.slug, nombre: p.nombre }))
 
   return (
     <html lang="es" className={montserrat.variable}>

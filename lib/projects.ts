@@ -172,7 +172,7 @@ export const getProyectos = cache(async (): Promise<Proyecto[]> => {
   if (IS_DEV_NO_SHEET) return MOCK_PROYECTOS
   try {
     const rows = await readSheet('proyectos!A2:Q1000')
-    const parsed = rows.map(parseProyecto).filter((p) => p.activo)
+    const parsed = rows.map(parseProyecto)
     // Si la Sheet devuelve vacío, usar mock para no romper el sitio
     return parsed.length > 0 ? parsed : MOCK_PROYECTOS
   } catch (err) {

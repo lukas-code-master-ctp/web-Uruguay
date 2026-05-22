@@ -141,10 +141,10 @@ export default function MapaInteractivo({ proyectos, apiKey, mapId }: Props) {
               key={p.slug}
               position={{ lat: p.lat, lng: p.lng }}
               onClick={() => setActiveSlug(p.slug)}
-              title={p.nombre}
+              title={p.activo ? p.nombre : `${p.nombre} (Sold Out)`}
             >
               <Pin
-                background="#C6A665"
+                background={p.activo ? '#C6A665' : '#9CA3AF'}
                 borderColor="#0A0A0A"
                 glyphColor="#0A0A0A"
                 scale={1.2}
@@ -169,6 +169,8 @@ export default function MapaInteractivo({ proyectos, apiKey, mapId }: Props) {
 }
 
 function ProyectoCard({ proyecto }: { proyecto: ProyectoConCoordenadas }) {
+  const isSoldOut = !proyecto.activo
+
   return (
     <article className="w-[280px] overflow-hidden">
       <div className="relative aspect-[16/10] w-full overflow-hidden">
@@ -177,8 +179,15 @@ function ProyectoCard({ proyecto }: { proyecto: ProyectoConCoordenadas }) {
           alt={proyecto.nombre}
           fill
           sizes="280px"
-          className="object-cover"
+          className={`object-cover ${isSoldOut ? 'grayscale' : ''}`}
         />
+        {isSoldOut && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+            <span className="rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[9px] font-semibold tracking-[0.3em] text-white uppercase backdrop-blur-md">
+              Sold out
+            </span>
+          </div>
+        )}
       </div>
       <div className="px-1 pt-3 pb-1">
         <p className="text-[9px] font-medium tracking-[0.25em] text-[#C6A665] uppercase">
@@ -187,15 +196,23 @@ function ProyectoCard({ proyecto }: { proyecto: ProyectoConCoordenadas }) {
         <h3 className="mt-1 text-lg font-light tracking-wide text-[#0A0A0A]">
           {proyecto.nombre}
         </h3>
-        <p className="mt-2 text-xs text-[#0A0A0A]/60">
-          Desde <span className="font-medium text-[#0A0A0A]">USD ${proyecto.precioDesde.toLocaleString('es-UY')}</span>
-        </p>
-        <Link
-          href={`/chacras/${proyecto.slug}`}
-          className="mt-3 inline-block w-full rounded-full bg-[#0A0A0A] px-4 py-2 text-center text-[10px] font-semibold tracking-[0.2em] text-white uppercase transition-colors hover:bg-[#0A0A0A]/80"
-        >
-          Ver proyecto
-        </Link>
+        {!isSoldOut && (
+          <p className="mt-2 text-xs text-[#0A0A0A]/60">
+            Desde <span className="font-medium text-[#0A0A0A]">USD ${proyecto.precioDesde.toLocaleString('es-UY')}</span>
+          </p>
+        )}
+        {isSoldOut ? (
+          <p className="mt-3 inline-block w-full rounded-full border border-[#0A0A0A]/15 bg-[#0A0A0A]/5 px-4 py-2 text-center text-[10px] font-semibold tracking-[0.2em] text-[#0A0A0A]/50 uppercase">
+            No disponible
+          </p>
+        ) : (
+          <Link
+            href={`/chacras/${proyecto.slug}`}
+            className="mt-3 inline-block w-full rounded-full bg-[#0A0A0A] px-4 py-2 text-center text-[10px] font-semibold tracking-[0.2em] text-white uppercase transition-colors hover:bg-[#0A0A0A]/80"
+          >
+            Ver proyecto
+          </Link>
+        )}
       </div>
     </article>
   )

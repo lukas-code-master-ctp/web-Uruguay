@@ -19,13 +19,14 @@ interface Props {
 
 export async function generateStaticParams() {
   const proyectos = await getProyectos()
-  return proyectos.map((p) => ({ slug: p.slug }))
+  // Solo se generan páginas estáticas para proyectos activos.
+  return proyectos.filter((p) => p.activo).map((p) => ({ slug: p.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const proyecto = await getProyectoBySlug(slug)
-  if (!proyecto) return {}
+  if (!proyecto || !proyecto.activo) return {}
 
   const title = `Chacras en ${proyecto.ubicacion} desde USD $${proyecto.precioDesde.toLocaleString('es-UY')} | ${proyecto.nombre}`
   const description = `${proyecto.nombre} — chacras en ${proyecto.ubicacion}. Desde USD $${proyecto.precioDesde.toLocaleString('es-UY')} con financiamiento en ${proyecto.financiamientoCuotas.join(', ')} cuotas. ${proyecto.puntosCercanos[0] ?? ''}. Consulta hoy.`
@@ -48,7 +49,8 @@ export const dynamicParams = true
 export default async function ProyectoPage({ params }: Props) {
   const { slug } = await params
   const proyecto = await getProyectoBySlug(slug)
-  if (!proyecto) notFound()
+  // Proyectos SOLD OUT (activo=false) no tienen página dedicada — 404.
+  if (!proyecto || !proyecto.activo) notFound()
 
   return (
     <PageTransition>
