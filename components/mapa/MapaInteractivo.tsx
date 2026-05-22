@@ -82,7 +82,10 @@ export default function MapaInteractivo({ proyectos, apiKey, mapId }: Props) {
 
   return (
     <APIProvider apiKey={apiKey}>
-      <div className="h-[calc(100vh-180px)] min-h-[520px] w-full overflow-hidden rounded-2xl border border-black/10 shadow-sm">
+      <div
+        data-lenis-prevent
+        className="h-[calc(100vh-180px)] min-h-[520px] w-full overflow-hidden rounded-2xl border border-black/10 shadow-sm"
+      >
         <Map
           defaultCenter={center}
           defaultZoom={10}
