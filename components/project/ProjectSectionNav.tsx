@@ -159,7 +159,7 @@ export default function ProjectSectionNav({ tieneMasterplan }: Props) {
 
           {/* Logo */}
           <div className="flex flex-shrink-0 items-center gap-4">
-            <Logo variant={isLight ? 'negro' : 'blanco'} className="h-9 w-auto" />
+            <Logo variant={isLight ? 'negro' : 'blanco'} className="h-10 w-auto" />
             <span className={`h-5 w-px flex-shrink-0 ${isLight ? 'bg-black/15' : 'bg-white/20'}`} />
           </div>
 

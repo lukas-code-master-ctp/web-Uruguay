@@ -83,8 +83,8 @@ export default function Nav({ proyectos = [] }: Props) {
         <div className="flex items-center justify-between gap-6">
 
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <Logo variant="blanco" className="h-8 w-auto" />
+          <div className="flex flex-shrink-0 items-center">
+            <Logo variant="blanco" className="h-10 w-auto" />
           </div>
 
           {/* Links desktop */}
