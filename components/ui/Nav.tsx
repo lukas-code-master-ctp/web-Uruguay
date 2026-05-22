@@ -15,11 +15,15 @@ interface Props {
   proyectos?: NavProyecto[]
 }
 
+// Rutas con tema claro (texto oscuro + glass blanco).
+// Cualquier otra ruta usa tema oscuro por defecto.
+const LIGHT_THEME_PATHS = new Set(['/proyectos', '/mapa'])
+
 export default function Nav({ proyectos = [] }: Props) {
   const pathname = usePathname()
-  // En páginas sin hero el nav es siempre visible y tiene tema claro (texto oscuro).
+  const isLightTheme = LIGHT_THEME_PATHS.has(pathname)
+  // En home (con hero) el nav aparece tras scrollear; en cualquier otra ruta es siempre visible.
   const isAlwaysVisible = pathname !== '/'
-  const isLightTheme = isAlwaysVisible
   const [visible, setVisible] = useState(isAlwaysVisible)
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeSlug, setActiveSlug] = useState<string | null>(null)
@@ -43,27 +47,49 @@ export default function Nav({ proyectos = [] }: Props) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [isAlwaysVisible])
 
-  // IntersectionObserver: activa el slug cuya sección ocupa el centro del viewport
+  // Scroll-spy: en cada scroll, elige el proyecto cuya sección está más cerca
+  // del centro del viewport. Más fiable que múltiples IntersectionObservers
+  // que disparan en orden indeterminado.
   useEffect(() => {
     if (proyectos.length === 0) return
 
-    const observers: IntersectionObserver[] = []
+    let rafId = 0
 
-    proyectos.forEach(({ slug }) => {
-      const el = document.getElementById(slug)
-      if (!el) return
+    const update = () => {
+      const center = window.innerHeight / 2
+      let bestSlug: string | null = null
+      let bestDistance = Infinity
 
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveSlug(slug)
-        },
-        { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
-      )
-      observer.observe(el)
-      observers.push(observer)
-    })
+      for (const { slug } of proyectos) {
+        const el = document.getElementById(slug)
+        if (!el) continue
+        const rect = el.getBoundingClientRect()
+        // Sección debe estar al menos parcialmente visible.
+        if (rect.bottom < 0 || rect.top > window.innerHeight) continue
 
-    return () => observers.forEach((o) => o.disconnect())
+        const sectionCenter = rect.top + rect.height / 2
+        const distance = Math.abs(sectionCenter - center)
+        if (distance < bestDistance) {
+          bestDistance = distance
+          bestSlug = slug
+        }
+      }
+      setActiveSlug(bestSlug)
+    }
+
+    const onScroll = () => {
+      cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(update)
+    }
+
+    update() // calcular en mount
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
+    return () => {
+      cancelAnimationFrame(rafId)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
   }, [proyectos])
 
   // Cierra menú mobile al click fuera
