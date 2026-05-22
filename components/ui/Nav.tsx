@@ -17,12 +17,19 @@ interface Props {
 
 export default function Nav({ proyectos = [] }: Props) {
   const pathname = usePathname()
-  const [visible, setVisible] = useState(false)
+  // En páginas sin hero el nav es siempre visible y tiene tema claro (texto oscuro).
+  const isAlwaysVisible = pathname !== '/'
+  const isLightTheme = isAlwaysVisible
+  const [visible, setVisible] = useState(isAlwaysVisible)
   const [menuOpen, setMenuOpen] = useState(false)
   const [activeSlug, setActiveSlug] = useState<string | null>(null)
 
-  // Mostrar/ocultar nav con histéresis
+  // Mostrar/ocultar nav con histéresis — solo en home (que tiene hero)
   useEffect(() => {
+    if (isAlwaysVisible) {
+      setVisible(true)
+      return
+    }
     const onScroll = () => {
       const y = window.scrollY
       const vh = window.innerHeight
@@ -34,7 +41,7 @@ export default function Nav({ proyectos = [] }: Props) {
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [isAlwaysVisible])
 
   // IntersectionObserver: activa el slug cuya sección ocupa el centro del viewport
   useEffect(() => {
@@ -70,6 +77,18 @@ export default function Nav({ proyectos = [] }: Props) {
   // No mostrar en páginas de proyecto — tienen su propio nav
   if (pathname.startsWith('/chacras/')) return null
 
+  // Tokens de color según tema
+  const pillClasses = isLightTheme
+    ? 'border-black/10 bg-white/70 shadow-sm'
+    : 'border-white/20 bg-white/10 shadow-lg'
+  const linkBase = isLightTheme ? 'text-[#0A0A0A]/70 hover:text-[#0A0A0A]' : 'text-white/80 hover:text-white'
+  const linkActive = isLightTheme ? 'bg-[#0A0A0A]/40' : 'bg-white/60'
+  const ctaClasses = isLightTheme
+    ? 'border-[#0A0A0A]/20 bg-[#0A0A0A]/5 text-[#0A0A0A] hover:bg-[#0A0A0A]/10'
+    : 'border-white/30 bg-white/15 text-white hover:bg-white/30'
+  const hamburgerBar = isLightTheme ? 'bg-[#0A0A0A]' : 'bg-white'
+  const mobileDivider = isLightTheme ? 'border-[#0A0A0A]/10' : 'border-white/15'
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
@@ -79,12 +98,12 @@ export default function Nav({ proyectos = [] }: Props) {
       }`}
     >
       {/* Frosted glass bar */}
-      <div className="mx-4 mt-3 rounded-2xl border border-white/20 bg-white/10 px-6 py-3 backdrop-blur-lg shadow-lg md:mx-8">
+      <div className={`mx-4 mt-3 rounded-2xl border px-6 py-3 backdrop-blur-lg md:mx-8 ${pillClasses}`}>
         <div className="flex items-center justify-between gap-6">
 
           {/* Logo */}
           <div className="flex flex-shrink-0 items-center">
-            <Logo variant="blanco" className="h-10 w-auto" />
+            <Logo variant={isLightTheme ? 'negro' : 'blanco'} className="h-10 w-auto" />
           </div>
 
           {/* Links desktop */}
@@ -93,13 +112,13 @@ export default function Nav({ proyectos = [] }: Props) {
               <Link
                 key={p.slug}
                 href={`/chacras/${p.slug}`}
-                className="relative pb-1 text-xs font-medium tracking-widest text-white/80 uppercase transition-colors hover:text-white"
+                className={`relative pb-1 text-xs font-medium tracking-widest uppercase transition-colors ${linkBase}`}
               >
                 {p.nombre}
                 {activeSlug === p.slug && (
                   <motion.span
                     layoutId="nav-underline"
-                    className="absolute bottom-0 left-0 right-0 h-px bg-white/60"
+                    className={`absolute bottom-0 left-0 right-0 h-px ${linkActive}`}
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -111,13 +130,13 @@ export default function Nav({ proyectos = [] }: Props) {
           <div className="hidden md:flex items-center gap-5 flex-shrink-0">
             <Link
               href="/mapa"
-              className="text-xs font-medium tracking-widest text-white/80 uppercase transition-colors hover:text-white"
+              className={`text-xs font-medium tracking-widest uppercase transition-colors ${linkBase}`}
             >
               Mapa
             </Link>
             <Link
               href="/#contacto"
-              className="rounded-full border border-white/30 bg-white/15 px-5 py-2 text-xs font-semibold tracking-widest text-white uppercase backdrop-blur-md transition-all hover:bg-white/30"
+              className={`rounded-full border px-5 py-2 text-xs font-semibold tracking-widest uppercase backdrop-blur-md transition-all ${ctaClasses}`}
             >
               Contacto
             </Link>
@@ -129,16 +148,16 @@ export default function Nav({ proyectos = [] }: Props) {
             onClick={(e) => { e.stopPropagation(); setMenuOpen((v) => !v) }}
             aria-label="Menú"
           >
-            <span className={`block h-px w-5 bg-white transition-transform duration-300 ${menuOpen ? 'translate-y-2 rotate-45' : ''}`} />
-            <span className={`block h-px w-5 bg-white transition-opacity duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
-            <span className={`block h-px w-5 bg-white transition-transform duration-300 ${menuOpen ? '-translate-y-2 -rotate-45' : ''}`} />
+            <span className={`block h-px w-5 transition-transform duration-300 ${hamburgerBar} ${menuOpen ? 'translate-y-2 rotate-45' : ''}`} />
+            <span className={`block h-px w-5 transition-opacity duration-300 ${hamburgerBar} ${menuOpen ? 'opacity-0' : ''}`} />
+            <span className={`block h-px w-5 transition-transform duration-300 ${hamburgerBar} ${menuOpen ? '-translate-y-2 -rotate-45' : ''}`} />
           </button>
         </div>
 
         {/* Menú mobile desplegable */}
         {menuOpen && (
           <div
-            className="mt-4 flex flex-col gap-4 border-t border-white/15 pt-4 md:hidden"
+            className={`mt-4 flex flex-col gap-4 border-t pt-4 md:hidden ${mobileDivider}`}
             onClick={(e) => e.stopPropagation()}
           >
             {proyectos.map((p) => (
@@ -146,7 +165,9 @@ export default function Nav({ proyectos = [] }: Props) {
                 key={p.slug}
                 href={`/chacras/${p.slug}`}
                 className={`text-xs font-medium tracking-widest uppercase transition-colors ${
-                  activeSlug === p.slug ? 'text-white' : 'text-white/80'
+                  activeSlug === p.slug
+                    ? isLightTheme ? 'text-[#0A0A0A]' : 'text-white'
+                    : linkBase
                 }`}
                 onClick={() => setMenuOpen(false)}
               >
@@ -155,14 +176,14 @@ export default function Nav({ proyectos = [] }: Props) {
             ))}
             <Link
               href="/mapa"
-              className="text-xs font-medium tracking-widest text-white/80 uppercase"
+              className={`text-xs font-medium tracking-widest uppercase ${linkBase}`}
               onClick={() => setMenuOpen(false)}
             >
               Mapa
             </Link>
             <Link
               href="/#contacto"
-              className="text-xs font-medium tracking-widest text-white/80 uppercase"
+              className={`text-xs font-medium tracking-widest uppercase ${linkBase}`}
               onClick={() => setMenuOpen(false)}
             >
               Contacto
