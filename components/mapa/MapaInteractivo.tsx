@@ -172,43 +172,43 @@ function ProyectoCard({ proyecto }: { proyecto: ProyectoConCoordenadas }) {
   const isSoldOut = !proyecto.activo
 
   return (
-    <article className="w-[280px] overflow-hidden">
+    <article className="w-[200px] overflow-hidden sm:w-[240px] md:w-[280px]">
       <div className="relative aspect-[16/10] w-full overflow-hidden">
         <Image
           src={proyecto.imagenes.hero}
           alt={proyecto.nombre}
           fill
-          sizes="280px"
+          sizes="(max-width: 640px) 200px, (max-width: 768px) 240px, 280px"
           className={`object-cover ${isSoldOut ? 'grayscale' : ''}`}
         />
         {isSoldOut && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-            <span className="rounded-full border border-white/40 bg-white/15 px-3 py-1 text-[9px] font-semibold tracking-[0.3em] text-white uppercase backdrop-blur-md">
+            <span className="rounded-full border border-white/40 bg-white/15 px-2.5 py-1 text-[8px] font-semibold tracking-[0.25em] text-white uppercase backdrop-blur-md sm:text-[9px] sm:tracking-[0.3em]">
               Sold out
             </span>
           </div>
         )}
       </div>
-      <div className="px-1 pt-3 pb-1">
-        <p className="text-[9px] font-medium tracking-[0.25em] text-[#C6A665] uppercase">
+      <div className="px-0.5 pt-2.5 pb-1 sm:px-1 sm:pt-3">
+        <p className="text-[8px] font-medium tracking-[0.2em] text-[#C6A665] uppercase sm:text-[9px] sm:tracking-[0.25em]">
           {proyecto.ubicacion}
         </p>
-        <h3 className="mt-1 text-lg font-light tracking-wide text-[#0A0A0A]">
+        <h3 className="mt-1 text-base font-light tracking-wide text-[#0A0A0A] sm:text-lg">
           {proyecto.nombre}
         </h3>
         {!isSoldOut && (
-          <p className="mt-2 text-xs text-[#0A0A0A]/60">
+          <p className="mt-1.5 text-[11px] text-[#0A0A0A]/60 sm:mt-2 sm:text-xs">
             Desde <span className="font-medium text-[#0A0A0A]">USD ${proyecto.precioDesde.toLocaleString('es-UY')}</span>
           </p>
         )}
         {isSoldOut ? (
-          <p className="mt-3 inline-block w-full rounded-full border border-[#0A0A0A]/15 bg-[#0A0A0A]/5 px-4 py-2 text-center text-[10px] font-semibold tracking-[0.2em] text-[#0A0A0A]/50 uppercase">
+          <p className="mt-2.5 inline-block w-full rounded-full border border-[#0A0A0A]/15 bg-[#0A0A0A]/5 px-3 py-1.5 text-center text-[9px] font-semibold tracking-[0.15em] text-[#0A0A0A]/50 uppercase sm:mt-3 sm:px-4 sm:py-2 sm:text-[10px] sm:tracking-[0.2em]">
             No disponible
           </p>
         ) : (
           <Link
             href={`/chacras/${proyecto.slug}`}
-            className="mt-3 inline-block w-full rounded-full bg-[#0A0A0A] px-4 py-2 text-center text-[10px] font-semibold tracking-[0.2em] text-white uppercase transition-colors hover:bg-[#0A0A0A]/80"
+            className="mt-2.5 inline-block w-full rounded-full bg-[#0A0A0A] px-3 py-1.5 text-center text-[9px] font-semibold tracking-[0.15em] text-white uppercase transition-colors hover:bg-[#0A0A0A]/80 sm:mt-3 sm:px-4 sm:py-2 sm:text-[10px] sm:tracking-[0.2em]"
           >
             Ver proyecto
           </Link>
