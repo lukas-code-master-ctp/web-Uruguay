@@ -189,11 +189,14 @@ export const getProyectoBySlug = cache(async (slug: string): Promise<Proyecto | 
 export const getSiteConfig = cache(async (): Promise<SiteConfig> => {
   if (IS_DEV_NO_SHEET) {
     return {
-      whatsappNumero: '+59899000000',
+      whatsappNumero: '+598 99 672 020',
       whatsappMensaje: 'Hola, me interesa información sobre una de sus chacras',
       emailContacto: 'info@ctprealestate.com',
     }
   }
   const rows = await readSheet('config!A2:B20')
-  return parseConfig(rows)
+  const cfg = parseConfig(rows)
+  // Fallback si la celda del sheet está vacía (no rompe el botón de WhatsApp).
+  if (!cfg.whatsappNumero) cfg.whatsappNumero = '+598 99 672 020'
+  return cfg
 })
