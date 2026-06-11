@@ -37,7 +37,7 @@ export default function ProjectIntro({ proyecto }: Props) {
 
           <div className="my-8 w-10 border-t border-[#C6A665]/40" />
 
-          <p className="text-sm font-light leading-relaxed text-white/60 md:text-base">
+          <p className="whitespace-pre-line text-sm font-light leading-relaxed text-white/60 md:text-base">
             {proyecto.descripcion}
           </p>
 

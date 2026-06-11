@@ -39,7 +39,7 @@ export default function ProjectHero({ proyecto }: Props) {
 
         <div className="w-16 border-t border-white/50" />
 
-        <p className="text-sm font-light leading-relaxed text-white/80 md:text-base">
+        <p className="whitespace-pre-line text-sm font-light leading-relaxed text-white/80 md:text-base">
           {proyecto.descripcionPreview || proyecto.descripcion}
         </p>
 
