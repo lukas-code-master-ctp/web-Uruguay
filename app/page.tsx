@@ -7,13 +7,14 @@ export const revalidate = 10
 
 export default async function Home() {
   const proyectos = await getProyectos()
-  // Solo proyectos activos aparecen en el home — los SOLD OUT viven solo en /proyectos y /mapa.
-  const proyectosActivos = proyectos.filter((p) => p.activo)
+  // En el home aparecen los proyectos activos y los "Próximamente" (como teaser).
+  // Los SOLD OUT quedan solo en /proyectos y /mapa.
+  const proyectosHome = proyectos.filter((p) => p.activo || p.proximamente)
 
   return (
     <main>
       <HomeHero />
-      <ProjectGrid proyectos={proyectosActivos} />
+      <ProjectGrid proyectos={proyectosHome} />
       <Footer />
     </main>
   )

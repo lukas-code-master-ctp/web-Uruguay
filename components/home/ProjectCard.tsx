@@ -55,13 +55,19 @@ export default function ProjectCard({ proyecto, index }: Props) {
           {proyecto.descripcionPreview || proyecto.descripcion}
         </p>
 
-        {/* CTA */}
-        <Link
-          href={`/chacras/${proyecto.slug}`}
-          className="mt-2 inline-block rounded-full border border-white/30 bg-white/15 px-10 py-4 text-xs font-semibold tracking-widest text-white uppercase backdrop-blur-md transition-all duration-300 hover:bg-white/30"
-        >
-          Ver proyecto
-        </Link>
+        {/* CTA — proyecto navegable, o sello informativo si es Próximamente */}
+        {proyecto.proximamente ? (
+          <span className="mt-2 inline-block rounded-full border border-[#C6A665]/60 bg-[#C6A665]/15 px-10 py-4 text-xs font-semibold tracking-widest text-white uppercase backdrop-blur-md">
+            Próximamente
+          </span>
+        ) : (
+          <Link
+            href={`/chacras/${proyecto.slug}`}
+            className="mt-2 inline-block rounded-full border border-white/30 bg-white/15 px-10 py-4 text-xs font-semibold tracking-widest text-white uppercase backdrop-blur-md transition-all duration-300 hover:bg-white/30"
+          >
+            Ver proyecto
+          </Link>
+        )}
       </div>
     </motion.section>
   )
