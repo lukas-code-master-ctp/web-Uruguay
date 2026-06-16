@@ -66,7 +66,7 @@ export default async function ProyectoPage({ params }: Props) {
       <ProjectIntro proyecto={proyecto} />
       <NearbyPoints puntos={proyecto.puntosCercanos} nombre={proyecto.nombre} ubicacion={proyecto.ubicacion} mapEmbed={proyecto.mapEmbed} />
       {proyecto.masterplanEmbed && <Masterplan src={proyecto.masterplanEmbed} />}
-      <Gallery imagenes={proyecto.imagenes.galeria} />
+      <Gallery portada={proyecto.imagenes.portadaGaleria} imagenes={proyecto.imagenes.galeria} />
       <FinancingCalc
         precioBase={proyecto.precioDesde}
         cuotas={proyecto.financiamientoCuotas}

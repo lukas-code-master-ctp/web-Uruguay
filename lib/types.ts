@@ -18,6 +18,8 @@ export interface Proyecto {
   activo: boolean
   imagenes: {
     hero: string
+    introVertical: string
+    portadaGaleria: string
     galeria: string[]
     video: string | null
   }

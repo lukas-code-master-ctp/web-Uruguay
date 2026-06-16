@@ -18,12 +18,8 @@ function parseEmbedValue(value: string | undefined): string | null {
 
 const NO_VIDEO_SLUGS = new Set(['tierras-del-este'])
 
-const GALLERY_COUNTS: Record<string, number> = {
-  'la-martina': 7,
-  'aires-manantiales': 6,
-  'ama-jose-ignacio': 7,
-  'tierras-del-este': 8,
-}
+// Cada proyecto tiene 6 fotos de galería (galeria-1..6.jpg).
+const GALLERY_COUNT = 6
 
 const IS_DEV_NO_SHEET =
   !process.env.GOOGLE_SHEET_ID ||
@@ -50,12 +46,14 @@ const MOCK_PROYECTOS: Proyecto[] = [
     activo: true,
     imagenes: {
       hero: '/proyectos/la-martina/hero.jpg',
-      galeria: Array.from({ length: 7 }, (_, i) => `/proyectos/la-martina/galeria-${i + 1}.jpg`),
+      introVertical: '/proyectos/la-martina/intro-vertical.jpg',
+      portadaGaleria: '/proyectos/la-martina/galeria-portada.jpg',
+      galeria: Array.from({ length: 6 }, (_, i) => `/proyectos/la-martina/galeria-${i + 1}.jpg`),
       video: '/proyectos/la-martina/video.mp4',
     },
   },
   {
-    slug: 'aires-manantiales',
+    slug: 'aires-de-manantiales',
     nombre: 'Aires de Manantiales',
     ubicacion: 'Manantiales, Uruguay',
     precioDesde: 70000,
@@ -73,9 +71,11 @@ const MOCK_PROYECTOS: Proyecto[] = [
     financiamientoTasas: [0.6, 0.7, 0.75],
     activo: true,
     imagenes: {
-      hero: '/proyectos/aires-manantiales/hero.jpg',
-      galeria: Array.from({ length: 6 }, (_, i) => `/proyectos/aires-manantiales/galeria-${i + 1}.jpg`),
-      video: '/proyectos/aires-manantiales/video.mp4',
+      hero: '/proyectos/aires-de-manantiales/hero.jpg',
+      introVertical: '/proyectos/aires-de-manantiales/intro-vertical.jpg',
+      portadaGaleria: '/proyectos/aires-de-manantiales/galeria-portada.jpg',
+      galeria: Array.from({ length: 6 }, (_, i) => `/proyectos/aires-de-manantiales/galeria-${i + 1}.jpg`),
+      video: '/proyectos/aires-de-manantiales/video.mp4',
     },
   },
   {
@@ -98,7 +98,9 @@ const MOCK_PROYECTOS: Proyecto[] = [
     activo: true,
     imagenes: {
       hero: '/proyectos/ama-jose-ignacio/hero.jpg',
-      galeria: Array.from({ length: 7 }, (_, i) => `/proyectos/ama-jose-ignacio/galeria-${i + 1}.jpg`),
+      introVertical: '/proyectos/ama-jose-ignacio/intro-vertical.jpg',
+      portadaGaleria: '/proyectos/ama-jose-ignacio/galeria-portada.jpg',
+      galeria: Array.from({ length: 6 }, (_, i) => `/proyectos/ama-jose-ignacio/galeria-${i + 1}.jpg`),
       video: '/proyectos/ama-jose-ignacio/video.mp4',
     },
   },
@@ -122,7 +124,9 @@ const MOCK_PROYECTOS: Proyecto[] = [
     activo: true,
     imagenes: {
       hero: '/proyectos/tierras-del-este/hero.jpg',
-      galeria: Array.from({ length: 8 }, (_, i) => `/proyectos/tierras-del-este/galeria-${i + 1}.jpg`),
+      introVertical: '/proyectos/tierras-del-este/intro-vertical.jpg',
+      portadaGaleria: '/proyectos/tierras-del-este/galeria-portada.jpg',
+      galeria: Array.from({ length: 6 }, (_, i) => `/proyectos/tierras-del-este/galeria-${i + 1}.jpg`),
       video: null,
     },
   },
@@ -130,8 +134,7 @@ const MOCK_PROYECTOS: Proyecto[] = [
 
 export function parseProyecto(row: string[]): Proyecto {
   const slug = row[0]
-  const count = GALLERY_COUNTS[slug] ?? 6
-  const galeria = Array.from({ length: count }, (_, i) => `/proyectos/${slug}/galeria-${i + 1}.jpg`)
+  const galeria = Array.from({ length: GALLERY_COUNT }, (_, i) => `/proyectos/${slug}/galeria-${i + 1}.jpg`)
 
   return {
     slug,
@@ -153,6 +156,8 @@ export function parseProyecto(row: string[]): Proyecto {
     masterplanEmbed: parseEmbedValue(row[16]),
     imagenes: {
       hero: `/proyectos/${slug}/hero.jpg`,
+      introVertical: `/proyectos/${slug}/intro-vertical.jpg`,
+      portadaGaleria: `/proyectos/${slug}/galeria-portada.jpg`,
       galeria,
       video: NO_VIDEO_SLUGS.has(slug) ? null : `/proyectos/${slug}/video.mp4`,
     },

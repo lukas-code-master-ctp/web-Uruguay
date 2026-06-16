@@ -15,6 +15,7 @@ const mockRow = [
   '40',
   '12,24,36',
   '0.6,0.7,0.75',
+  'Chacras frente al mar en José Ignacio.',
   'TRUE',
 ]
 
@@ -36,13 +37,16 @@ describe('parseProyecto', () => {
   it('attaches correct image paths based on slug', () => {
     const result = parseProyecto(mockRow)
     expect(result.imagenes.hero).toBe('/proyectos/la-martina/hero.jpg')
+    expect(result.imagenes.introVertical).toBe('/proyectos/la-martina/intro-vertical.jpg')
+    expect(result.imagenes.portadaGaleria).toBe('/proyectos/la-martina/galeria-portada.jpg')
+    expect(result.imagenes.galeria).toHaveLength(6)
     expect(result.imagenes.galeria[0]).toBe('/proyectos/la-martina/galeria-1.jpg')
     expect(result.imagenes.video).toBe('/proyectos/la-martina/video.mp4')
   })
 
-  it('returns activo=false when column N is not TRUE', () => {
+  it('returns activo=false when the activo column is not TRUE', () => {
     const inactiveRow = [...mockRow]
-    inactiveRow[13] = 'FALSE'
+    inactiveRow[14] = 'FALSE'
     expect(parseProyecto(inactiveRow).activo).toBe(false)
   })
 })

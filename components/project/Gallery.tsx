@@ -7,22 +7,24 @@ import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
 
 interface Props {
+  portada: string
   imagenes: string[]
 }
 
-export default function Gallery({ imagenes }: Props) {
+export default function Gallery({ portada, imagenes }: Props) {
   const [open, setOpen] = useState(false)
   const [index, setIndex] = useState(0)
 
-  const [hero, ...rest] = imagenes
+  // Lightbox: la portada va primero, luego las fotos del grid.
+  const slides = [portada, ...imagenes]
 
   const open_ = (i: number) => { setIndex(i); setOpen(true) }
 
   return (
     <section id="galeria">
 
-      {/* Primera imagen — a sangre, pantalla completa */}
-      {hero && (
+      {/* Portada de galería — a sangre, pantalla completa */}
+      {portada && (
         <motion.div
           className="relative h-[70vh] w-full cursor-pointer overflow-hidden"
           initial={{ opacity: 0 }}
@@ -32,8 +34,8 @@ export default function Gallery({ imagenes }: Props) {
           onClick={() => open_(0)}
         >
           <Image
-            src={hero}
-            alt="Galería 1"
+            src={portada}
+            alt="Galería"
             fill
             sizes="100vw"
             priority
@@ -49,10 +51,10 @@ export default function Gallery({ imagenes }: Props) {
         </motion.div>
       )}
 
-      {/* Resto — grid de 2 columnas */}
-      {rest.length > 0 && (
+      {/* Fotos — grid de 3 columnas */}
+      {imagenes.length > 0 && (
         <div className="grid grid-cols-2 md:grid-cols-3">
-          {rest.map((src, i) => (
+          {imagenes.map((src, i) => (
             <motion.div
               key={src}
               className="relative aspect-square cursor-pointer overflow-hidden"
@@ -64,7 +66,7 @@ export default function Gallery({ imagenes }: Props) {
             >
               <Image
                 src={src}
-                alt={`Galería ${i + 2}`}
+                alt={`Galería ${i + 1}`}
                 fill
                 sizes="(max-width: 768px) 50vw, 33vw"
                 className="object-cover transition-transform duration-500 hover:scale-105"
@@ -78,7 +80,7 @@ export default function Gallery({ imagenes }: Props) {
         open={open}
         close={() => setOpen(false)}
         index={index}
-        slides={imagenes.map((src) => ({ src }))}
+        slides={slides.map((src) => ({ src }))}
       />
     </section>
   )

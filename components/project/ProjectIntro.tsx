@@ -9,13 +9,22 @@ interface Props {
 }
 
 export default function ProjectIntro({ proyecto }: Props) {
-  const imagenLateral = proyecto.imagenes.galeria[0] ?? proyecto.imagenes.hero
+  const imagenLateral = proyecto.imagenes.introVertical
+
+  // La Martina usa la variante clara (fondo beige + letras negras); el resto, fondo oscuro.
+  const esBeige = proyecto.slug === 'la-martina'
+  const bg = esBeige ? 'bg-[#F5F0E8]' : 'bg-[#0A0A0A]'
+  const txtTitulo = esBeige ? 'text-[#0A0A0A]' : 'text-white'
+  const txtUbicacion = esBeige ? 'text-[#0A0A0A]/45' : 'text-white/35'
+  const txtCuerpo = esBeige ? 'text-[#0A0A0A]/75' : 'text-white/60'
+  const txtLabel = esBeige ? 'text-[#0A0A0A]/40' : 'text-white/30'
+  const txtPrecio = esBeige ? 'text-[#0A0A0A]/85' : 'text-white/80'
 
   return (
     <section id="introduccion" className="grid grid-cols-1 md:grid-cols-2 min-h-screen">
 
-      {/* Columna izquierda — texto editorial, fondo oscuro */}
-      <div className="bg-[#0A0A0A] flex items-center px-10 py-20 md:px-16 md:py-24 order-2 md:order-1">
+      {/* Columna izquierda — texto editorial */}
+      <div className={`${bg} flex items-center px-10 py-20 md:px-16 md:py-24 order-2 md:order-1`}>
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -27,25 +36,25 @@ export default function ProjectIntro({ proyecto }: Props) {
             Introducción
           </p>
 
-          <h2 className="text-4xl font-light tracking-wide text-white md:text-5xl lg:text-6xl leading-tight">
+          <h2 className={`text-4xl font-light tracking-wide ${txtTitulo} md:text-5xl lg:text-6xl leading-tight`}>
             {proyecto.nombre}
           </h2>
 
-          <p className="mt-3 text-xs font-medium tracking-[0.25em] text-white/35 uppercase">
+          <p className={`mt-3 text-xs font-medium tracking-[0.25em] ${txtUbicacion} uppercase`}>
             {proyecto.ubicacion}
           </p>
 
           <div className="my-8 w-10 border-t border-[#C6A665]/40" />
 
-          <p className="whitespace-pre-line text-sm font-light leading-relaxed text-white/60 md:text-base">
+          <p className={`whitespace-pre-line text-sm font-light leading-relaxed ${txtCuerpo} md:text-base`}>
             {proyecto.descripcion}
           </p>
 
           <div className="mt-10">
-            <p className="text-[10px] font-medium tracking-[0.3em] text-white/30 uppercase mb-1">
+            <p className={`text-[10px] font-medium tracking-[0.3em] ${txtLabel} uppercase mb-1`}>
               Desde
             </p>
-            <p className="text-2xl font-light tracking-wide text-white/80">
+            <p className={`text-2xl font-light tracking-wide ${txtPrecio}`}>
               USD ${proyecto.precioDesde.toLocaleString('es-UY')}
             </p>
           </div>
