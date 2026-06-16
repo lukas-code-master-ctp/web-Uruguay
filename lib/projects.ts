@@ -18,9 +18,27 @@ function parseEmbedValue(value: string | undefined): string | null {
 
 const NO_VIDEO_SLUGS = new Set(['tierras-del-este'])
 
-// Proyectos inactivos que se anuncian como "Próximamente" (en vez de "Sold Out").
-// Cuando se activen (activo=TRUE) este flag deja de tener efecto.
-const PROXIMAMENTE_SLUGS = new Set(['tierras-del-este'])
+/**
+ * Estado del proyecto, leído de la columna `activo` (O) de la Sheet.
+ * Valores aceptados (sin distinguir mayúsculas/acentos/espacios):
+ *   - TRUE / ACTIVO         → activo, navegable, normal
+ *   - PROXIMAMENTE          → navegable + franja "Próximamente"
+ *   - FALSE / SOLD_OUT      → agotado: oculto del home/nav, "Sold out" en /proyectos y /mapa
+ * Cualquier otro valor o vacío → se trata como agotado (no se publica).
+ */
+function parseEstado(raw: string | undefined): { activo: boolean; proximamente: boolean } {
+  const v = (raw ?? '')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '') // quita acentos (PRÓXIMAMENTE → PROXIMAMENTE)
+    .trim()
+    .toUpperCase()
+    .replace(/[\s-]+/g, '_') // "SOLD OUT" / "SOLD-OUT" → "SOLD_OUT"
+
+  if (v === 'TRUE' || v === 'ACTIVO') return { activo: true, proximamente: false }
+  if (v === 'PROXIMAMENTE') return { activo: true, proximamente: true }
+  // FALSE, SOLD_OUT, vacío o desconocido → no publicado (sold out).
+  return { activo: false, proximamente: false }
+}
 
 // Cada proyecto tiene 6 fotos de galería (galeria-1..6.jpg).
 const GALLERY_COUNT = 6
@@ -143,6 +161,7 @@ const MOCK_PROYECTOS: Proyecto[] = [
 export function parseProyecto(row: string[]): Proyecto {
   const slug = row[0]
   const galeria = Array.from({ length: GALLERY_COUNT }, (_, i) => `/proyectos/${slug}/galeria-${i + 1}.jpg`)
+  const estado = parseEstado(row[14])
 
   return {
     slug,
@@ -159,8 +178,8 @@ export function parseProyecto(row: string[]): Proyecto {
     financiamientoCuotas: row[11]?.split(',').map(Number) ?? [12, 24, 36],
     financiamientoTasas: row[12]?.split(',').map(Number) ?? [0.6, 0.7, 0.75],
     descripcionPreview: row[13] ?? '',
-    activo: row[14]?.toUpperCase() === 'TRUE',
-    proximamente: PROXIMAMENTE_SLUGS.has(slug),
+    activo: estado.activo,
+    proximamente: estado.proximamente,
     mapEmbed: parseEmbedValue(row[15]),
     masterplanEmbed: parseEmbedValue(row[16]),
     imagenes: {

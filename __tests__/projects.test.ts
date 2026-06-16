@@ -51,6 +51,44 @@ describe('parseProyecto', () => {
   })
 })
 
+describe('estado (columna O / activo)', () => {
+  const withEstado = (valor: string) => {
+    const r = [...mockRow]
+    r[14] = valor
+    return parseProyecto(r)
+  }
+
+  it('TRUE → activo, no próximamente', () => {
+    const p = withEstado('TRUE')
+    expect(p.activo).toBe(true)
+    expect(p.proximamente).toBe(false)
+  })
+
+  it('ACTIVO → activo, no próximamente', () => {
+    expect(withEstado('ACTIVO').activo).toBe(true)
+  })
+
+  it('PROXIMAMENTE → activo (navegable) + proximamente', () => {
+    const p = withEstado('PROXIMAMENTE')
+    expect(p.activo).toBe(true)
+    expect(p.proximamente).toBe(true)
+  })
+
+  it('PRÓXIMAMENTE (con tilde y minúsculas) también funciona', () => {
+    const p = withEstado('  Próximamente ')
+    expect(p.activo).toBe(true)
+    expect(p.proximamente).toBe(true)
+  })
+
+  it('SOLD_OUT / "SOLD OUT" / FALSE → inactivo, no próximamente', () => {
+    for (const v of ['SOLD_OUT', 'SOLD OUT', 'FALSE', '']) {
+      const p = withEstado(v)
+      expect(p.activo).toBe(false)
+      expect(p.proximamente).toBe(false)
+    }
+  })
+})
+
 describe('parseConfig', () => {
   it('parses config rows into SiteConfig', () => {
     const rows = [

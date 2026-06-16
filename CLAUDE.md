@@ -37,7 +37,10 @@ Tests viven en `__tests__/`. Cubren **lógica pura** (`lib/projects.ts` parsing,
 
 **Caching / ISR:** las páginas declaran `export const revalidate = 10`. Para refrescar bajo demanda tras editar la Sheet existe `GET /api/revalidate?secret=<REVALIDATE_SECRET>` (opcionalmente `&path=/chacras/<slug>`); sin `path` revalida home + todos los proyectos.
 
-**Activo vs SOLD OUT:** el campo `activo` (columna `N`/booleano) controla visibilidad. Proyectos inactivos: **no** se generan estáticamente, dan 404 en su página, y se excluyen del home y del nav — pero **sí** aparecen en `/proyectos` y `/mapa`. Respetar esta regla al tocar listados.
+**Estado del proyecto (columna `O`):** un string parseado por `parseEstado` en `lib/projects.ts` que deriva dos booleanos, `activo` y `proximamente`. Valores (sin distinguir mayúsculas/acentos/espacios):
+- `TRUE` / `ACTIVO` → `activo=true`, normal.
+- `PROXIMAMENTE` → `activo=true` + `proximamente=true`: navegable igual que un activo, pero con una franja diagonal "Próximamente" (`components/shared/ProximamenteRibbon.tsx`) en home, página de proyecto, `/proyectos` y `/mapa`. Es **solo visual**, no limita funcionalidad.
+- `FALSE` / `SOLD_OUT` (o vacío/desconocido) → `activo=false`: **no** se genera estáticamente, da 404 en su página, se excluye del home y del nav — pero **sí** aparece como "Sold out" en `/proyectos` y `/mapa`. Respetar esta regla al tocar listados.
 
 ### Rutas (`app/`)
 
@@ -77,6 +80,6 @@ NEXT_PUBLIC_GOOGLE_MAPS_ID=             # mapId para /mapa
 
 ## Estructura de la Google Sheet
 
-- Pestaña **`proyectos`** (`A2:Q...`): slug, nombre, ubicacion, precio_desde, precio_hasta, descripcion, destacados(csv), amenities(csv), puntos_cercanos(csv), coordenadas, financiamiento_inicial, financiamiento_cuotas(csv), financiamiento_tasas(csv), descripcion_preview, activo(TRUE/FALSE), map_embed, masterplan_embed. Los campos `*_embed` aceptan una URL o un tag `<iframe>` completo (se extrae el `src` — ver `parseEmbedValue`).
+- Pestaña **`proyectos`** (`A2:Q...`): slug, nombre, ubicacion, precio_desde, precio_hasta, descripcion, destacados(csv), amenities(csv), puntos_cercanos(csv), coordenadas, financiamiento_inicial, financiamiento_cuotas(csv), financiamiento_tasas(csv), descripcion_preview, activo (estado: `TRUE`/`PROXIMAMENTE`/`SOLD_OUT` — ver `parseEstado`), map_embed, masterplan_embed. Los campos `*_embed` aceptan una URL o un tag `<iframe>` completo (se extrae el `src` — ver `parseEmbedValue`).
 - Pestaña **`leads`** (`A:F`): timestamp, nombre, email, telefono, mensaje, proyecto.
 - Pestaña **`config`** (`A2:B`): pares clave/valor — `whatsapp_numero`, `whatsapp_mensaje`, `email_contacto`.
