@@ -1,13 +1,15 @@
 interface Props {
+  /** Texto de la franja, ej. "Próximamente" o "Sold out". */
+  label: string
   /** 'lg' para heros a pantalla completa, 'sm' para tarjetas chicas (mapa). */
   size?: 'lg' | 'sm'
 }
 
 /**
- * Franja diagonal "Próximamente" en la esquina superior izquierda.
+ * Franja diagonal en la esquina superior izquierda (estado del proyecto).
  * El contenedor padre debe ser `relative` y tener `overflow-hidden`.
  */
-export default function ProximamenteRibbon({ size = 'lg' }: Props) {
+export default function EstadoRibbon({ label, size = 'lg' }: Props) {
   const box = size === 'lg' ? 'h-[150px] w-[150px]' : 'h-[88px] w-[88px]'
   const band =
     size === 'lg'
@@ -19,7 +21,7 @@ export default function ProximamenteRibbon({ size = 'lg' }: Props) {
       <span
         className={`absolute -rotate-45 bg-[#C6A665] text-center font-semibold uppercase text-[#0A0A0A] shadow-md ${band}`}
       >
-        Próximamente
+        {label}
       </span>
     </div>
   )

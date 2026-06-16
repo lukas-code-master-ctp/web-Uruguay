@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Proyecto } from '@/lib/types'
-import ProximamenteRibbon from '@/components/shared/ProximamenteRibbon'
+import EstadoRibbon from '@/components/shared/EstadoRibbon'
 
 interface Props {
   proyecto: Proyecto
@@ -36,7 +36,7 @@ export default function ProjectCard({ proyecto, index }: Props) {
       <div className="absolute inset-0 bg-black/45" />
 
       {/* Franja informativa */}
-      {proyecto.proximamente && <ProximamenteRibbon />}
+      {proyecto.proximamente && <EstadoRibbon label="Próximamente" />}
 
       {/* Contenido centrado */}
       <div className="relative z-10 flex flex-col items-center gap-5 px-6 text-center max-w-2xl">

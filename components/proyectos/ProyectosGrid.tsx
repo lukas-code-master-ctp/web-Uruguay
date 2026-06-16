@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Proyecto } from '@/lib/types'
-import ProximamenteRibbon from '@/components/shared/ProximamenteRibbon'
+import EstadoRibbon from '@/components/shared/EstadoRibbon'
 
 interface Props {
   proyectos: Proyecto[]
@@ -54,15 +54,9 @@ function ProyectoTile({ proyecto, index }: { proyecto: Proyecto; index: number }
         }`}
       />
 
-      {/* Franja informativa */}
-      {proyecto.proximamente && <ProximamenteRibbon />}
-
-      {/* Badge SOLD OUT */}
-      {isSoldOut && (
-        <div className="absolute top-5 right-5 z-20 rounded-full border border-white/40 bg-white/15 px-4 py-1.5 text-[10px] font-semibold tracking-[0.3em] text-white uppercase backdrop-blur-md">
-          Sold out
-        </div>
-      )}
+      {/* Franja de estado */}
+      {proyecto.proximamente && <EstadoRibbon label="Próximamente" />}
+      {isSoldOut && <EstadoRibbon label="Sold out" />}
 
       {/* Contenido */}
       <div className="relative z-10 flex h-full flex-col items-center justify-between p-6 text-center md:p-10">
