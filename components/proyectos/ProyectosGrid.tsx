@@ -38,6 +38,7 @@ function ProyectoTile({ proyecto, index }: { proyecto: Proyecto; index: number }
         alt={proyecto.nombre}
         fill
         sizes="(max-width: 768px) 100vw, 50vw"
+        quality={90}
         className={`object-cover transition-transform duration-700 ${
           isSoldOut ? 'grayscale' : 'group-hover:scale-105'
         }`}

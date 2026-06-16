@@ -38,6 +38,7 @@ export default function Gallery({ portada, imagenes }: Props) {
             alt="Galería"
             fill
             sizes="100vw"
+            quality={90}
             priority
             className="object-cover transition-transform duration-700 hover:scale-[1.03]"
           />
@@ -57,7 +58,7 @@ export default function Gallery({ portada, imagenes }: Props) {
           {imagenes.map((src, i) => (
             <motion.div
               key={src}
-              className="relative aspect-square cursor-pointer overflow-hidden"
+              className="relative aspect-[3/2] cursor-pointer overflow-hidden"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -69,6 +70,7 @@ export default function Gallery({ portada, imagenes }: Props) {
                 alt={`Galería ${i + 1}`}
                 fill
                 sizes="(max-width: 768px) 50vw, 33vw"
+                quality={90}
                 className="object-cover transition-transform duration-500 hover:scale-105"
               />
             </motion.div>

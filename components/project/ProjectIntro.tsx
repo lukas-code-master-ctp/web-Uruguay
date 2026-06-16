@@ -68,6 +68,7 @@ export default function ProjectIntro({ proyecto }: Props) {
           alt={proyecto.nombre}
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
+          quality={90}
           className="object-cover"
         />
         {/* velo sutil para suavizar el borde */}
