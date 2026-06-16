@@ -5,6 +5,7 @@ import { APIProvider, Map, AdvancedMarker, InfoWindow, Pin } from '@vis.gl/react
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Proyecto } from '@/lib/types'
+import ProximamenteRibbon from '@/components/shared/ProximamenteRibbon'
 
 interface Props {
   proyectos: Proyecto[]
@@ -169,8 +170,7 @@ export default function MapaInteractivo({ proyectos, apiKey, mapId }: Props) {
 }
 
 function ProyectoCard({ proyecto }: { proyecto: ProyectoConCoordenadas }) {
-  const isProximamente = proyecto.proximamente
-  const isSoldOut = !proyecto.activo && !isProximamente
+  const isSoldOut = !proyecto.activo
 
   return (
     <article className="w-[200px] overflow-hidden sm:w-[240px] md:w-[280px]">
@@ -182,13 +182,7 @@ function ProyectoCard({ proyecto }: { proyecto: ProyectoConCoordenadas }) {
           sizes="(max-width: 640px) 200px, (max-width: 768px) 240px, 280px"
           className={`object-cover ${isSoldOut ? 'grayscale' : ''}`}
         />
-        {isProximamente && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/35">
-            <span className="rounded-full border border-[#C6A665]/70 bg-[#C6A665]/30 px-2.5 py-1 text-[8px] font-semibold tracking-[0.25em] text-white uppercase backdrop-blur-md sm:text-[9px] sm:tracking-[0.3em]">
-              Próximamente
-            </span>
-          </div>
-        )}
+        {proyecto.proximamente && <ProximamenteRibbon size="sm" />}
         {isSoldOut && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/50">
             <span className="rounded-full border border-white/40 bg-white/15 px-2.5 py-1 text-[8px] font-semibold tracking-[0.25em] text-white uppercase backdrop-blur-md sm:text-[9px] sm:tracking-[0.3em]">
@@ -204,16 +198,12 @@ function ProyectoCard({ proyecto }: { proyecto: ProyectoConCoordenadas }) {
         <h3 className="mt-1 text-base font-light tracking-wide text-[#0A0A0A] sm:text-lg">
           {proyecto.nombre}
         </h3>
-        {proyecto.activo && (
+        {!isSoldOut && (
           <p className="mt-1.5 text-[11px] text-[#0A0A0A]/60 sm:mt-2 sm:text-xs">
             Desde <span className="font-medium text-[#0A0A0A]">USD ${proyecto.precioDesde.toLocaleString('es-UY')}</span>
           </p>
         )}
-        {isProximamente ? (
-          <p className="mt-2.5 inline-block w-full rounded-full border border-[#C6A665]/50 bg-[#C6A665]/15 px-3 py-1.5 text-center text-[9px] font-semibold tracking-[0.15em] text-[#0A0A0A]/70 uppercase sm:mt-3 sm:px-4 sm:py-2 sm:text-[10px] sm:tracking-[0.2em]">
-            Disponible próximamente
-          </p>
-        ) : isSoldOut ? (
+        {isSoldOut ? (
           <p className="mt-2.5 inline-block w-full rounded-full border border-[#0A0A0A]/15 bg-[#0A0A0A]/5 px-3 py-1.5 text-center text-[9px] font-semibold tracking-[0.15em] text-[#0A0A0A]/50 uppercase sm:mt-3 sm:px-4 sm:py-2 sm:text-[10px] sm:tracking-[0.2em]">
             No disponible
           </p>

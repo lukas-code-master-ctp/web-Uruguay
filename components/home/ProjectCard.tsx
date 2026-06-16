@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Proyecto } from '@/lib/types'
+import ProximamenteRibbon from '@/components/shared/ProximamenteRibbon'
 
 interface Props {
   proyecto: Proyecto
@@ -34,6 +35,9 @@ export default function ProjectCard({ proyecto, index }: Props) {
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/45" />
 
+      {/* Franja informativa */}
+      {proyecto.proximamente && <ProximamenteRibbon />}
+
       {/* Contenido centrado */}
       <div className="relative z-10 flex flex-col items-center gap-5 px-6 text-center max-w-2xl">
 
@@ -55,19 +59,13 @@ export default function ProjectCard({ proyecto, index }: Props) {
           {proyecto.descripcionPreview || proyecto.descripcion}
         </p>
 
-        {/* CTA — proyecto navegable, o sello informativo si es Próximamente */}
-        {proyecto.proximamente ? (
-          <span className="mt-2 inline-block rounded-full border border-[#C6A665]/60 bg-[#C6A665]/15 px-10 py-4 text-xs font-semibold tracking-widest text-white uppercase backdrop-blur-md">
-            Próximamente
-          </span>
-        ) : (
-          <Link
-            href={`/chacras/${proyecto.slug}`}
-            className="mt-2 inline-block rounded-full border border-white/30 bg-white/15 px-10 py-4 text-xs font-semibold tracking-widest text-white uppercase backdrop-blur-md transition-all duration-300 hover:bg-white/30"
-          >
-            Ver proyecto
-          </Link>
-        )}
+        {/* CTA */}
+        <Link
+          href={`/chacras/${proyecto.slug}`}
+          className="mt-2 inline-block rounded-full border border-white/30 bg-white/15 px-10 py-4 text-xs font-semibold tracking-widest text-white uppercase backdrop-blur-md transition-all duration-300 hover:bg-white/30"
+        >
+          Ver proyecto
+        </Link>
       </div>
     </motion.section>
   )

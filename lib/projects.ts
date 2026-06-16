@@ -128,7 +128,7 @@ const MOCK_PROYECTOS: Proyecto[] = [
     financiamientoInicial: 40,
     financiamientoCuotas: [12, 24, 36],
     financiamientoTasas: [0.6, 0.7, 0.75],
-    activo: false,
+    activo: true,
     proximamente: true,
     imagenes: {
       hero: '/proyectos/tierras-del-este/hero.jpg',
