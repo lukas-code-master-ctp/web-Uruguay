@@ -20,7 +20,9 @@ export default function ProyectosGrid({ proyectos }: Props) {
 }
 
 function ProyectoTile({ proyecto, index }: { proyecto: Proyecto; index: number }) {
-  const isSoldOut = !proyecto.activo
+  const isProximamente = proyecto.proximamente
+  const isSoldOut = !proyecto.activo && !isProximamente
+  const noNavegable = !proyecto.activo // inactivo: sold out o próximamente
 
   const card = (
     <motion.article
@@ -29,7 +31,7 @@ function ProyectoTile({ proyecto, index }: { proyecto: Proyecto; index: number }
       viewport={{ once: true, margin: '-10%' }}
       transition={{ duration: 0.6, delay: index * 0.1, ease: 'easeOut' }}
       className={`group relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-black/10 bg-[#F5F0E8] md:aspect-[16/10] ${
-        isSoldOut ? 'cursor-not-allowed' : ''
+        noNavegable ? 'cursor-not-allowed' : ''
       }`}
     >
       {/* Imagen de fondo */}
@@ -40,7 +42,7 @@ function ProyectoTile({ proyecto, index }: { proyecto: Proyecto; index: number }
         sizes="(max-width: 768px) 100vw, 50vw"
         quality={90}
         className={`object-cover transition-transform duration-700 ${
-          isSoldOut ? 'grayscale' : 'group-hover:scale-105'
+          isSoldOut ? 'grayscale' : isProximamente ? '' : 'group-hover:scale-105'
         }`}
       />
 
@@ -53,7 +55,12 @@ function ProyectoTile({ proyecto, index }: { proyecto: Proyecto; index: number }
         }`}
       />
 
-      {/* Badge SOLD OUT */}
+      {/* Badge de estado */}
+      {isProximamente && (
+        <div className="absolute top-5 right-5 z-20 rounded-full border border-[#C6A665]/70 bg-[#C6A665]/25 px-4 py-1.5 text-[10px] font-semibold tracking-[0.3em] text-white uppercase backdrop-blur-md">
+          Próximamente
+        </div>
+      )}
       {isSoldOut && (
         <div className="absolute top-5 right-5 z-20 rounded-full border border-white/40 bg-white/15 px-4 py-1.5 text-[10px] font-semibold tracking-[0.3em] text-white uppercase backdrop-blur-md">
           Sold out
@@ -81,8 +88,12 @@ function ProyectoTile({ proyecto, index }: { proyecto: Proyecto; index: number }
           </p>
         </div>
 
-        {/* CTA — solo si activo */}
-        {isSoldOut ? (
+        {/* CTA / estado */}
+        {isProximamente ? (
+          <span className="rounded-full border border-[#C6A665]/60 bg-[#C6A665]/15 px-8 py-3 text-[10px] font-semibold tracking-[0.25em] text-white uppercase backdrop-blur-md md:text-xs">
+            Disponible próximamente
+          </span>
+        ) : isSoldOut ? (
           <span className="rounded-full border border-white/20 bg-white/5 px-8 py-3 text-[10px] font-semibold tracking-[0.25em] text-white/50 uppercase md:text-xs">
             No disponible
           </span>
@@ -95,7 +106,7 @@ function ProyectoTile({ proyecto, index }: { proyecto: Proyecto; index: number }
     </motion.article>
   )
 
-  if (isSoldOut) return card
+  if (noNavegable) return card
 
   return (
     <Link href={`/chacras/${proyecto.slug}`} aria-label={`Ver proyecto ${proyecto.nombre}`}>

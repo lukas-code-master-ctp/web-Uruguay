@@ -18,6 +18,10 @@ function parseEmbedValue(value: string | undefined): string | null {
 
 const NO_VIDEO_SLUGS = new Set(['tierras-del-este'])
 
+// Proyectos inactivos que se anuncian como "Próximamente" (en vez de "Sold Out").
+// Cuando se activen (activo=TRUE) este flag deja de tener efecto.
+const PROXIMAMENTE_SLUGS = new Set(['tierras-del-este'])
+
 // Cada proyecto tiene 6 fotos de galería (galeria-1..6.jpg).
 const GALLERY_COUNT = 6
 
@@ -44,6 +48,7 @@ const MOCK_PROYECTOS: Proyecto[] = [
     financiamientoCuotas: [12, 24, 36],
     financiamientoTasas: [0.6, 0.7, 0.75],
     activo: true,
+    proximamente: false,
     imagenes: {
       hero: '/proyectos/la-martina/hero.jpg',
       introVertical: '/proyectos/la-martina/intro-vertical.jpg',
@@ -70,6 +75,7 @@ const MOCK_PROYECTOS: Proyecto[] = [
     financiamientoCuotas: [12, 24, 36],
     financiamientoTasas: [0.6, 0.7, 0.75],
     activo: true,
+    proximamente: false,
     imagenes: {
       hero: '/proyectos/aires-de-manantiales/hero.jpg',
       introVertical: '/proyectos/aires-de-manantiales/intro-vertical.jpg',
@@ -96,6 +102,7 @@ const MOCK_PROYECTOS: Proyecto[] = [
     financiamientoCuotas: [12, 24, 36],
     financiamientoTasas: [0.6, 0.7, 0.75],
     activo: true,
+    proximamente: false,
     imagenes: {
       hero: '/proyectos/ama-jose-ignacio/hero.jpg',
       introVertical: '/proyectos/ama-jose-ignacio/intro-vertical.jpg',
@@ -121,7 +128,8 @@ const MOCK_PROYECTOS: Proyecto[] = [
     financiamientoInicial: 40,
     financiamientoCuotas: [12, 24, 36],
     financiamientoTasas: [0.6, 0.7, 0.75],
-    activo: true,
+    activo: false,
+    proximamente: true,
     imagenes: {
       hero: '/proyectos/tierras-del-este/hero.jpg',
       introVertical: '/proyectos/tierras-del-este/intro-vertical.jpg',
@@ -152,6 +160,7 @@ export function parseProyecto(row: string[]): Proyecto {
     financiamientoTasas: row[12]?.split(',').map(Number) ?? [0.6, 0.7, 0.75],
     descripcionPreview: row[13] ?? '',
     activo: row[14]?.toUpperCase() === 'TRUE',
+    proximamente: PROXIMAMENTE_SLUGS.has(slug),
     mapEmbed: parseEmbedValue(row[15]),
     masterplanEmbed: parseEmbedValue(row[16]),
     imagenes: {

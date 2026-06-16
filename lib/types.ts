@@ -16,6 +16,8 @@ export interface Proyecto {
   financiamientoCuotas: number[]
   financiamientoTasas: number[]
   activo: boolean
+  /** Proyecto inactivo que se anuncia como "Próximamente" (en vez de Sold Out). Solo informativo. */
+  proximamente: boolean
   imagenes: {
     hero: string
     introVertical: string
