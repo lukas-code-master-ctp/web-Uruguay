@@ -9,7 +9,7 @@ export default function HomeHero() {
     <section className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-black">
       {/* Video fondo */}
       <video
-        src="/proyectos/la-martina/video.mp4"
+        src="/proyectos/home-hero.mp4"
         autoPlay
         muted
         loop
