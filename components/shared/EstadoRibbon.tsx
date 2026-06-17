@@ -10,10 +10,10 @@ interface Props {
  * El contenedor padre debe ser `relative` y tener `overflow-hidden`.
  */
 export default function EstadoRibbon({ label, size = 'lg' }: Props) {
-  const box = size === 'lg' ? 'h-[150px] w-[150px]' : 'h-[88px] w-[88px]'
+  const box = size === 'lg' ? 'h-[240px] w-[240px]' : 'h-[88px] w-[88px]'
   const band =
     size === 'lg'
-      ? 'top-[34px] left-[-46px] w-[210px] py-2 text-[11px] tracking-[0.3em]'
+      ? 'top-[56px] left-[-72px] w-[340px] py-2.5 text-[15px] tracking-[0.3em]'
       : 'top-[18px] left-[-32px] w-[132px] py-1 text-[7px] tracking-[0.2em]'
 
   return (
