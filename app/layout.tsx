@@ -13,13 +13,32 @@ const montserrat = Montserrat({
   display: 'swap',
 })
 
+// URL base para resolver imágenes OG a URLs absolutas (necesario para que
+// WhatsApp/Facebook/Google las lean). Toma el dominio de producción de Vercel
+// automáticamente; se puede forzar con NEXT_PUBLIC_SITE_URL (dominio final).
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : 'http://localhost:3000')
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: 'CTP Real Estate | Chacras en Uruguay',
   description: 'Chacras rurales en Uruguay. Inversión en naturaleza con financiamiento. CTP Real Estate.',
   openGraph: {
     siteName: 'CTP Real Estate',
     locale: 'es_UY',
     type: 'website',
+    images: [
+      { url: '/og.jpg', width: 1200, height: 630, alt: 'CTP Real Estate — Chacras en Uruguay' },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'CTP Real Estate | Chacras en Uruguay',
+    description: 'Chacras rurales en Uruguay. Inversión en naturaleza con financiamiento.',
+    images: ['/og.jpg'],
   },
 }
 
