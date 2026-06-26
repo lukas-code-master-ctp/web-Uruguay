@@ -39,8 +39,10 @@ Tests viven en `__tests__/`. Cubren **lógica pura** (`lib/projects.ts` parsing,
 
 **Estado del proyecto (columna `O`):** un string parseado por `parseEstado` en `lib/projects.ts` que deriva dos booleanos, `activo` y `proximamente`. Valores (sin distinguir mayúsculas/acentos/espacios):
 - `TRUE` / `ACTIVO` → `activo=true`, normal.
-- `PROXIMAMENTE` → `activo=true` + `proximamente=true`: navegable igual que un activo, pero con una franja diagonal "Próximamente" (`components/shared/ProximamenteRibbon.tsx`) en home, página de proyecto, `/proyectos` y `/mapa`. Es **solo visual**, no limita funcionalidad.
-- `FALSE` / `SOLD_OUT` (o vacío/desconocido) → `activo=false`: **no** se genera estáticamente, da 404 en su página, se excluye del home y del nav — pero **sí** aparece como "Sold out" en `/proyectos` y `/mapa`. Respetar esta regla al tocar listados.
+- `PROXIMAMENTE` → `activo=true` + `proximamente=true`: navegable igual que un activo, pero con una franja diagonal "Próximamente" (`components/shared/EstadoRibbon.tsx`) en home, página de proyecto, `/proyectos` y `/mapa`. Es **solo visual**, no limita funcionalidad.
+- `FALSE` / `SOLD_OUT` (o vacío/desconocido) → `activo=false`: **no** se genera estáticamente, da 404 en su página, se excluye del home y del nav — pero **sí** aparece como "Sold out" en `/proyectos` y `/mapa` (misma `EstadoRibbon`, label "Sold out"). Respetar esta regla al tocar listados.
+
+`EstadoRibbon` recibe `label` y `size` (`'lg'` para heros a pantalla completa —responsive—, `'sm'` para la tarjeta del `/mapa`); el contenedor padre debe ser `relative` + `overflow-hidden`.
 
 ### Rutas (`app/`)
 
@@ -53,11 +55,15 @@ Tests viven en `__tests__/`. Cubren **lógica pura** (`lib/projects.ts` parsing,
 | `/api/revalidate` | `app/api/revalidate/route.ts` | Revalidación on-demand |
 | `/sitemap.xml`, `/robots.txt` | `app/sitemap.ts`, `app/robots.ts` | Generados |
 
-`app/layout.tsx` envuelve todo con `LenisProvider` (scroll suave), `Nav` (recibe proyectos activos) y `WhatsAppButton` (número desde `config`). Fuente Montserrat vía `next/font`.
+`app/layout.tsx` envuelve todo con `LenisProvider` (scroll suave), `Nav` (recibe proyectos activos) y `WhatsAppButton` (número desde `config`). Fuente Montserrat vía `next/font`. También define `metadataBase` (de `NEXT_PUBLIC_SITE_URL` o el dominio de producción de Vercel) y la imagen OG por defecto (`/public/og.jpg`, 1200×630) + Twitter card; las páginas de proyecto sobreescriben la imagen OG con su `hero`.
+
+### Assets de imágenes (`public/proyectos/<slug>/`)
+
+El slug **debe coincidir con el nombre de la carpeta** (ej. `aires-de-manantiales`); `parseProyecto` arma las rutas desde el slug, así que un desajuste rompe todas las imágenes. Por proyecto: `hero.jpg`, `intro-vertical.jpg` (retrato, lateral de la intro), `galeria-portada.jpg` (portada de la galería), `galeria-1..6.jpg` y opcional `video.mp4`. Las fotos van como JPG optimizado; `next.config.ts` declara `images.qualities` y los componentes piden `quality={90}`. El video del hero del home es `public/proyectos/home-hero.mp4` (hardcodeado en `components/home/HomeHero.tsx`). El favicon/ícono se genera en `app/` (`favicon.ico`, `icon.png`, `apple-icon.png`).
 
 ### Componentes
 
-Organizados por contexto: `components/home/`, `components/project/`, `components/proyectos/`, `components/mapa/`, `components/ui/` (Nav, Logo), `components/shared/` (Footer, WhatsAppButton, PageTransition, LenisProvider, StickyContact, InteractiveEmbed).
+Organizados por contexto: `components/home/`, `components/project/`, `components/proyectos/`, `components/mapa/`, `components/ui/` (Nav, Logo), `components/shared/` (Footer, WhatsAppButton, PageTransition, LenisProvider, StickyContact, InteractiveEmbed, EstadoRibbon).
 
 `InteractiveEmbed` es el patrón reutilizable para iframes (mapa Google My Maps, masterplan): muestra un overlay "click para interactuar" que bloquea el scroll-jacking hasta que el usuario hace click, y coopera con Lenis vía `data-lenis-prevent`. Usarlo para cualquier iframe embebido nuevo.
 
@@ -76,6 +82,7 @@ GOOGLE_SHEET_ID=
 REVALIDATE_SECRET=                      # para /api/revalidate
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=        # para /mapa
 NEXT_PUBLIC_GOOGLE_MAPS_ID=             # mapId para /mapa
+NEXT_PUBLIC_SITE_URL=                   # dominio final (metadataBase / imágenes OG al compartir); opcional, default = dominio de Vercel
 ```
 
 ## Estructura de la Google Sheet
