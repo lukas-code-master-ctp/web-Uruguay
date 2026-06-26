@@ -71,7 +71,7 @@ function ProyectoTile({ proyecto, index }: { proyecto: Proyecto; index: number }
             {proyecto.nombre}
           </h2>
           <p
-            className={`text-[10px] font-medium tracking-[0.3em] uppercase opacity-80 md:text-xs ${
+            className={`text-[15px] font-medium tracking-[0.3em] uppercase opacity-80 md:text-xs ${
               isSoldOut ? 'opacity-60' : ''
             }`}
           >
@@ -81,11 +81,11 @@ function ProyectoTile({ proyecto, index }: { proyecto: Proyecto; index: number }
 
         {/* CTA */}
         {isSoldOut ? (
-          <span className="rounded-full border border-white/20 bg-white/5 px-8 py-3 text-[10px] font-semibold tracking-[0.25em] text-white/50 uppercase md:text-xs">
+          <span className="rounded-full border border-white/20 bg-white/5 px-8 py-3 text-[15px] font-semibold tracking-[0.25em] text-white/50 uppercase md:text-xs">
             No disponible
           </span>
         ) : (
-          <span className="rounded-full border border-white/30 bg-white/15 px-8 py-3 text-[10px] font-semibold tracking-[0.25em] text-white uppercase backdrop-blur-md transition-all duration-300 group-hover:bg-white/30 md:text-xs">
+          <span className="rounded-full border border-white/30 bg-white/15 px-8 py-3 text-[15px] font-semibold tracking-[0.25em] text-white uppercase backdrop-blur-md transition-all duration-300 group-hover:bg-white/30 md:text-xs">
             Ir al proyecto
           </span>
         )}

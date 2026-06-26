@@ -11,6 +11,21 @@
   --font-sans: var(--font-montserrat), sans-serif;
   --letter-spacing-wider: 0.08em;
   --letter-spacing-widest: 0.16em;
+
+  /* Escala tipográfica +50% para textos que NO son títulos.
+     Los títulos usan text-3xl en adelante (sin modificar). */
+  --text-xs: 1.125rem;      /* 12px → 18px */
+  --text-xs--line-height: 1.5rem;
+  --text-sm: 1.3125rem;     /* 14px → 21px */
+  --text-sm--line-height: 1.875rem;
+  --text-base: 1.5rem;      /* 16px → 24px */
+  --text-base--line-height: 2.25rem;
+  --text-lg: 1.6875rem;     /* 18px → 27px */
+  --text-lg--line-height: 2.625rem;
+  --text-xl: 1.875rem;      /* 20px → 30px */
+  --text-xl--line-height: 2.625rem;
+  --text-2xl: 2.25rem;      /* 24px → 36px */
+  --text-2xl--line-height: 3rem;
 }
 
 html {

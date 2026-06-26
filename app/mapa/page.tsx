@@ -20,7 +20,7 @@ export default async function MapaPage() {
     <PageTransition>
       <main className="min-h-screen bg-[#F5F0E8] pb-16">
         <header className="px-6 pt-32 pb-10 text-center md:pt-36 md:pb-12">
-          <p className="mb-4 text-[10px] font-medium tracking-[0.35em] text-[#C6A665] uppercase">
+          <p className="mb-4 text-[15px] font-medium tracking-[0.35em] text-[#C6A665] uppercase">
             Ubicación
           </p>
           <h1 className="text-4xl font-light tracking-wide text-[#0A0A0A] md:text-5xl lg:text-6xl">

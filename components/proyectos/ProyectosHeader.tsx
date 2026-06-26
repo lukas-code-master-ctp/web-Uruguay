@@ -10,7 +10,7 @@ export default function ProyectosHeader() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: 'easeOut' }}
       >
-        <p className="mb-4 text-[10px] font-medium tracking-[0.35em] text-[#C6A665] uppercase">
+        <p className="mb-4 text-[15px] font-medium tracking-[0.35em] text-[#C6A665] uppercase">
           Catálogo
         </p>
         <h1 className="text-4xl font-light tracking-wide text-[#0A0A0A] md:text-6xl lg:text-7xl">

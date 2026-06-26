@@ -138,7 +138,7 @@ export default function Nav({ proyectos = [] }: Props) {
               <Link
                 key={p.slug}
                 href={`/chacras/${p.slug}`}
-                className={`relative pb-1 text-xs font-medium tracking-widest uppercase transition-colors ${linkBase}`}
+                className={`relative pb-1 text-[12px] font-medium tracking-widest uppercase transition-colors ${linkBase}`}
               >
                 {p.nombre}
                 {activeSlug === p.slug && (
@@ -156,13 +156,13 @@ export default function Nav({ proyectos = [] }: Props) {
           <div className="hidden md:flex items-center gap-5 flex-shrink-0">
             <Link
               href="/mapa"
-              className={`text-xs font-medium tracking-widest uppercase transition-colors ${linkBase}`}
+              className={`text-[12px] font-medium tracking-widest uppercase transition-colors ${linkBase}`}
             >
               Mapa
             </Link>
             <Link
               href="/#contacto"
-              className={`rounded-full border px-5 py-2 text-xs font-semibold tracking-widest uppercase backdrop-blur-md transition-all ${ctaClasses}`}
+              className={`rounded-full border px-5 py-2 text-[12px] font-semibold tracking-widest uppercase backdrop-blur-md transition-all ${ctaClasses}`}
             >
               Contacto
             </Link>
@@ -190,7 +190,7 @@ export default function Nav({ proyectos = [] }: Props) {
               <Link
                 key={p.slug}
                 href={`/chacras/${p.slug}`}
-                className={`text-xs font-medium tracking-widest uppercase transition-colors ${
+                className={`text-[12px] font-medium tracking-widest uppercase transition-colors ${
                   activeSlug === p.slug
                     ? isLightTheme ? 'text-[#0A0A0A]' : 'text-white'
                     : linkBase
@@ -202,14 +202,14 @@ export default function Nav({ proyectos = [] }: Props) {
             ))}
             <Link
               href="/mapa"
-              className={`text-xs font-medium tracking-widest uppercase ${linkBase}`}
+              className={`text-[12px] font-medium tracking-widest uppercase ${linkBase}`}
               onClick={() => setMenuOpen(false)}
             >
               Mapa
             </Link>
             <Link
               href="/#contacto"
-              className={`text-xs font-medium tracking-widest uppercase ${linkBase}`}
+              className={`text-[12px] font-medium tracking-widest uppercase ${linkBase}`}
               onClick={() => setMenuOpen(false)}
             >
               Contacto

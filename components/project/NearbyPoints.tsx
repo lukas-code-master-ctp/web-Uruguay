@@ -8,9 +8,16 @@ interface Props {
   nombre: string
   ubicacion: string
   mapEmbed: string | null
+  claro?: boolean
 }
 
-export default function NearbyPoints({ puntos, nombre, ubicacion, mapEmbed }: Props) {
+export default function NearbyPoints({ puntos, nombre, ubicacion, mapEmbed, claro = false }: Props) {
+  const accent = claro ? 'text-[#9a6642]' : 'text-[#C6A665]'
+  const tituloIzq = claro ? 'text-[#9a6642]' : 'text-[#0A0A0A]'
+  const bgDerecha = claro ? 'bg-white' : 'bg-[#0A0A0A]'
+  const puntoTexto = claro ? 'text-[#0A0A0A]/80' : 'text-white/80'
+  const puntoBorde = claro ? 'border-[#0A0A0A]/10' : 'border-white/10'
+
   return (
     <section id="ubicacion">
 
@@ -26,10 +33,10 @@ export default function NearbyPoints({ puntos, nombre, ubicacion, mapEmbed }: Pr
             transition={{ duration: 0.8 }}
             className="max-w-sm"
           >
-            <p className="mb-6 text-[10px] font-medium tracking-[0.35em] text-[#C6A665] uppercase">
+            <p className={`mb-6 text-[15px] font-medium tracking-[0.35em] ${accent} uppercase`}>
               Ubicación
             </p>
-            <h2 className="text-3xl font-light leading-snug tracking-wide text-[#0A0A0A] md:text-4xl lg:text-5xl">
+            <h2 className={`text-3xl font-light leading-snug tracking-wide ${tituloIzq} md:text-4xl lg:text-5xl`}>
               En el corazón del<br />litoral uruguayo
             </h2>
             <p className="mt-4 text-xs font-medium tracking-widest text-[#0A0A0A]/40 uppercase">
@@ -38,8 +45,8 @@ export default function NearbyPoints({ puntos, nombre, ubicacion, mapEmbed }: Pr
           </motion.div>
         </div>
 
-        {/* Columna derecha — fondo oscuro, lista de puntos */}
-        <div className="bg-[#0A0A0A] flex items-center px-10 py-20 md:px-16 md:py-24">
+        {/* Columna derecha — lista de puntos */}
+        <div className={`${bgDerecha} flex items-center px-10 py-20 md:px-16 md:py-24`}>
           <motion.ul
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -54,12 +61,12 @@ export default function NearbyPoints({ puntos, nombre, ubicacion, mapEmbed }: Pr
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="flex items-baseline gap-4 border-b border-white/10 py-5"
+                className={`flex items-baseline gap-4 border-b ${puntoBorde} py-5`}
               >
-                <span className="text-[10px] font-medium tracking-widest text-[#C6A665] uppercase w-5 flex-shrink-0">
+                <span className={`text-[15px] font-medium tracking-widest ${accent} uppercase w-5 flex-shrink-0`}>
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <span className="text-sm font-light tracking-wide text-white/80">
+                <span className={`text-sm font-light tracking-wide ${puntoTexto}`}>
                   {punto}
                 </span>
               </motion.li>

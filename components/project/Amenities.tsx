@@ -18,7 +18,7 @@ export default function Amenities({ amenities }: Props) {
         transition={{ duration: 0.7 }}
         className="mb-16 max-w-xl"
       >
-        <p className="mb-5 text-[10px] font-medium tracking-[0.35em] text-[#C6A665] uppercase">
+        <p className="mb-5 text-[15px] font-medium tracking-[0.35em] text-[#C6A665] uppercase">
           Ecosistema
         </p>
         <h2 className="text-3xl font-light tracking-wide text-white md:text-4xl lg:text-5xl">

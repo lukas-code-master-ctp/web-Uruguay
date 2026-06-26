@@ -52,6 +52,9 @@ export default async function ProyectoPage({ params }: Props) {
   // Proyectos SOLD OUT (activo=false) no tienen página dedicada — 404.
   if (!proyecto || !proyecto.activo) notFound()
 
+  // La Martina usa tema claro (fondos blanco/arena, acento #9a6642 en vez de negro/dorado).
+  const claro = proyecto.slug === 'la-martina'
+
   return (
     <PageTransition>
       <JsonLd proyecto={proyecto} />
@@ -64,15 +67,16 @@ export default async function ProyectoPage({ params }: Props) {
 
       {/* Secciones */}
       <ProjectIntro proyecto={proyecto} />
-      <NearbyPoints puntos={proyecto.puntosCercanos} nombre={proyecto.nombre} ubicacion={proyecto.ubicacion} mapEmbed={proyecto.mapEmbed} />
-      {proyecto.masterplanEmbed && <Masterplan src={proyecto.masterplanEmbed} />}
+      <NearbyPoints puntos={proyecto.puntosCercanos} nombre={proyecto.nombre} ubicacion={proyecto.ubicacion} mapEmbed={proyecto.mapEmbed} claro={claro} />
+      {proyecto.masterplanEmbed && <Masterplan src={proyecto.masterplanEmbed} claro={claro} />}
       <Gallery portada={proyecto.imagenes.portadaGaleria} imagenes={proyecto.imagenes.galeria} />
       <FinancingCalc
         precioBase={proyecto.precioDesde}
         cuotas={proyecto.financiamientoCuotas}
         tasas={proyecto.financiamientoTasas}
+        claro={claro}
       />
-      <ContactForm proyectoSlug={proyecto.slug} proyectoNombre={proyecto.nombre} />
+      <ContactForm proyectoSlug={proyecto.slug} proyectoNombre={proyecto.nombre} claro={claro} />
 
       <Footer />
     </PageTransition>

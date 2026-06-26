@@ -65,7 +65,7 @@ export default function ProjectHero({ proyecto }: Props) {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 1.4, ease: 'easeOut' }}
       >
-        <p className="text-[10px] font-medium tracking-[0.25em] text-white/40 uppercase mb-1">
+        <p className="text-[15px] font-medium tracking-[0.25em] text-white/40 uppercase mb-1">
           Precio desde
         </p>
         <p className="text-2xl font-light tracking-wide text-white/30 md:text-3xl">

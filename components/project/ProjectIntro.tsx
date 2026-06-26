@@ -11,14 +11,16 @@ interface Props {
 export default function ProjectIntro({ proyecto }: Props) {
   const imagenLateral = proyecto.imagenes.introVertical
 
-  // La Martina usa la variante clara (fondo beige + letras negras); el resto, fondo oscuro.
+  // La Martina usa la variante clara (fondo arena, acento #9a6642); el resto, fondo oscuro + dorado.
   const esBeige = proyecto.slug === 'la-martina'
   const bg = esBeige ? 'bg-[#F5F0E8]' : 'bg-[#0A0A0A]'
-  const txtTitulo = esBeige ? 'text-[#0A0A0A]' : 'text-white'
+  const txtTitulo = esBeige ? 'text-[#9a6642]' : 'text-white'
   const txtUbicacion = esBeige ? 'text-[#0A0A0A]/45' : 'text-white/35'
   const txtCuerpo = esBeige ? 'text-[#0A0A0A]/75' : 'text-white/60'
   const txtLabel = esBeige ? 'text-[#0A0A0A]/40' : 'text-white/30'
-  const txtPrecio = esBeige ? 'text-[#0A0A0A]/85' : 'text-white/80'
+  const txtPrecio = esBeige ? 'text-[#9a6642]' : 'text-white/80'
+  const accent = esBeige ? 'text-[#9a6642]' : 'text-[#C6A665]'
+  const accentBorder = esBeige ? 'border-[#9a6642]/40' : 'border-[#C6A665]/40'
 
   return (
     <section id="introduccion" className="grid grid-cols-1 md:grid-cols-2 min-h-screen">
@@ -32,7 +34,7 @@ export default function ProjectIntro({ proyecto }: Props) {
           transition={{ duration: 0.8 }}
           className="max-w-md"
         >
-          <p className="mb-6 text-[10px] font-medium tracking-[0.35em] text-[#C6A665] uppercase">
+          <p className={`mb-6 text-[15px] font-medium tracking-[0.35em] ${accent} uppercase`}>
             Introducción
           </p>
 
@@ -44,14 +46,14 @@ export default function ProjectIntro({ proyecto }: Props) {
             {proyecto.ubicacion}
           </p>
 
-          <div className="my-8 w-10 border-t border-[#C6A665]/40" />
+          <div className={`my-8 w-10 border-t ${accentBorder}`} />
 
           <p className={`whitespace-pre-line text-sm font-light leading-relaxed ${txtCuerpo} md:text-base`}>
             {proyecto.descripcion}
           </p>
 
           <div className="mt-10">
-            <p className={`text-[10px] font-medium tracking-[0.3em] ${txtLabel} uppercase mb-1`}>
+            <p className={`text-[15px] font-medium tracking-[0.3em] ${txtLabel} uppercase mb-1`}>
               Desde
             </p>
             <p className={`text-2xl font-light tracking-wide ${txtPrecio}`}>

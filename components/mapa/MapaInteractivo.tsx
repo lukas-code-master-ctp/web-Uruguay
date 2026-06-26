@@ -189,11 +189,11 @@ function ProyectoCard({ proyecto }: { proyecto: ProyectoConCoordenadas }) {
         <p className="text-[8px] font-medium tracking-[0.2em] text-[#C6A665] uppercase sm:text-[9px] sm:tracking-[0.25em]">
           {proyecto.ubicacion}
         </p>
-        <h3 className="mt-1 text-base font-light tracking-wide text-[#0A0A0A] sm:text-lg">
+        <h3 className="mt-1 text-[16px] font-light tracking-wide text-[#0A0A0A] sm:text-[18px]">
           {proyecto.nombre}
         </h3>
         {!isSoldOut && (
-          <p className="mt-1.5 text-[11px] text-[#0A0A0A]/60 sm:mt-2 sm:text-xs">
+          <p className="mt-1.5 text-[11px] text-[#0A0A0A]/60 sm:mt-2 sm:text-[12px]">
             Desde <span className="font-medium text-[#0A0A0A]">USD ${proyecto.precioDesde.toLocaleString('es-UY')}</span>
           </p>
         )}

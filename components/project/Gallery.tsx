@@ -45,7 +45,7 @@ export default function Gallery({ portada, imagenes }: Props) {
           <div className="absolute inset-0 bg-black/15" />
           {/* Etiqueta */}
           <div className="absolute bottom-6 left-8 md:left-12">
-            <p className="text-[10px] font-medium tracking-[0.35em] text-white/60 uppercase">
+            <p className="text-[15px] font-medium tracking-[0.35em] text-white/60 uppercase">
               Galería
             </p>
           </div>
