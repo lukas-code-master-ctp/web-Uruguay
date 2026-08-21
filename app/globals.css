@@ -8,7 +8,17 @@
   --color-gray-light: #F5F5F5;
   --color-gold: #C6A665;
   --color-green: #2C4A3E;
+
+  /* Paleta del tema claro de La Martina (ver lib/proyecto-tema.ts) */
+  --color-martina-oro: #AFA27F;
+  --color-martina-verde: #475242;
+  --color-martina-grafito: #45463F;
+  --color-martina-fondo: #D3D5C8;
+  --color-martina-crema: #F6F2E9;
+  --color-martina-marfil: #FDFBF0;
   --font-sans: var(--font-montserrat), sans-serif;
+  /* Display de la marca (Meganté). Sin glifos acentuados: usar solo en textos sin tildes. */
+  --font-marca: var(--font-megante), var(--font-montserrat), sans-serif;
   --letter-spacing-wider: 0.08em;
   --letter-spacing-widest: 0.16em;
 

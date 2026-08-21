@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import LenisProvider from '@/components/shared/LenisProvider'
 import WhatsAppButton from '@/components/shared/WhatsAppButton'
@@ -11,6 +12,16 @@ const montserrat = Montserrat({
   weight: ['300', '400', '600', '700'],
   variable: '--font-montserrat',
   display: 'swap',
+})
+
+// Meganté — tipografía display de la marca La Martina (wordmark del hero,
+// introducción y sección de video). OJO: no trae glifos acentuados, así que
+// solo debe usarse en textos sin tildes ni ñ.
+const megante = localFont({
+  src: './fonts/megante.ttf',
+  variable: '--font-megante',
+  display: 'swap',
+  adjustFontFallback: false,
 })
 
 // URL base para resolver imágenes OG a URLs absolutas (necesario para que
@@ -51,7 +62,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     .map((p) => ({ slug: p.slug, nombre: p.nombre }))
 
   return (
-    <html lang="es" className={montserrat.variable}>
+    <html lang="es" className={`${montserrat.variable} ${megante.variable}`}>
       <body>
         <LenisProvider>
           <Nav proyectos={navProyectos} />

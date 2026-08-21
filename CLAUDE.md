@@ -59,7 +59,17 @@ Tests viven en `__tests__/`. Cubren **lógica pura** (`lib/projects.ts` parsing,
 
 ### Assets de imágenes (`public/proyectos/<slug>/`)
 
-El slug **debe coincidir con el nombre de la carpeta** (ej. `aires-de-manantiales`); `parseProyecto` arma las rutas desde el slug, así que un desajuste rompe todas las imágenes. Por proyecto: `hero.jpg`, `intro-vertical.jpg` (retrato, lateral de la intro), `galeria-portada.jpg` (portada de la galería), `galeria-1..6.jpg` y opcional `video.mp4`. Las fotos van como JPG optimizado; `next.config.ts` declara `images.qualities` y los componentes piden `quality={90}`. El video del hero del home es `public/proyectos/home-hero.mp4` (hardcodeado en `components/home/HomeHero.tsx`). El favicon/ícono se genera en `app/` (`favicon.ico`, `icon.png`, `apple-icon.png`).
+El slug **debe coincidir con el nombre de la carpeta** (ej. `aires-de-manantiales`); `parseProyecto` arma las rutas desde el slug, así que un desajuste rompe todas las imágenes. Por proyecto: `hero.jpg`, `intro-vertical.jpg` (retrato, lateral de la intro), `galeria-portada.jpg` (portada de la galería), `galeria-1..6.jpg` y opcional `video.mp4`. Las fotos van como JPG optimizado; `next.config.ts` declara `images.qualities` y los componentes piden `quality={90}`. El video del hero del home es `public/proyectos/home-hero.mp4` (hardcodeado en `components/home/HomeHero.tsx`). La Martina suma tres piezas propias, referenciadas desde `lib/proyecto-tema.ts`: `fondo.jpg` (textura verde salvia), `mapa-ilustrado.jpg` (mapa de ubicación de la introducción) y `plano-lotes.jpg` (plano del barrio). El favicon/ícono se genera en `app/` (`favicon.ico`, `icon.png`, `apple-icon.png`).
+
+### Tema por proyecto (`lib/proyecto-tema.ts`)
+
+`getTema(slug)` devuelve la personalización visual de cada proyecto. Por defecto todas las páginas usan el **tema oscuro** (`#0A0A0A` + dorado `#C6A665`). **La Martina** usa el **tema claro**: fondo verde salvia texturado, acento oliva `#AFA27F`, títulos verde `#475242` — tokens `--color-martina-*` en `app/globals.css`.
+
+El tema también define las piezas que no tienen columna en la Sheet: `fondo` (textura), `mapaIlustrado` (reemplaza la foto vertical de la introducción), `planoLotes` (abre la sección de ubicación), `youtubeId` + `datosVideo` (sección `VideoShowcase`) y `fotoContacto`. Para replicar el look en otro proyecto basta con agregar una entrada en `TEMAS`; los componentes ya reciben `tema` y caen al tema oscuro si no hay entrada.
+
+Dos detalles de contenido que vienen de la Sheet y se parsean en el cliente:
+- `descripcion` se convierte en párrafos / subtítulo / lista con `parsearDescripcion` (líneas que empiezan con `•`, `-` o `*` son ítems con icono de pin; una línea suelta terminada en `:` es subtítulo).
+- `descripcion_preview` se parte en dos líneas para el claim del hero editorial (`partirClaim`): respeta un salto de línea explícito y, si no lo hay, corta antes del último `" en "`.
 
 ### Componentes
 
@@ -68,6 +78,14 @@ Organizados por contexto: `components/home/`, `components/project/`, `components
 `InteractiveEmbed` es el patrón reutilizable para iframes (mapa Google My Maps, masterplan): muestra un overlay "click para interactuar" que bloquea el scroll-jacking hasta que el usuario hace click, y coopera con Lenis vía `data-lenis-prevent`. Usarlo para cualquier iframe embebido nuevo.
 
 ## Estilos
+
+**Tipografías.** Montserrat (`next/font/google`) para el sitio entero. **Meganté** (`app/fonts/megante.ttf`, `next/font/local`) es la display de La Martina: se aplica con la clase `font-marca` a los títulos de esa página (wordmark del hero, claim, h2 de cada sección y el precio "desde"). Los otros proyectos no la usan. Los labels y el texto de cuerpo siguen en Montserrat.
+
+Nota sobre el token: en Tailwind v4 el nombre `--font-display` **no** genera utilidad (choca con el descriptor CSS `font-display`); por eso el token se llama `--font-marca`.
+
+La fuente original no traía **ningún** glifo acentuado. `scripts/parchear-fuente.py` genera los compuestos (á é í ó ú ñ ü + mayúsculas, más una `i` sin punto para la í) a partir de `app/fonts/megante-original.ttf`; el resultado ya está commiteado. Solo hay que volver a correrlo si cambia la fuente base. Meganté tiene **un solo peso y no tiene cursiva** — evitar `font-medium`/`font-bold`/`italic` sobre `font-marca` para que el navegador no sintetice.
+
+⚠️ El archivo es la versión **Personal Use Only** (`Meganté-Personal-Use-Only`, de Zamroni Hamzah). Para producción hace falta la licencia comercial.
 
 Tailwind v4 sin archivo de config JS — los tokens de marca se definen en el bloque `@theme` de `app/globals.css` (`--color-gold #C6A665`, `--color-graphite`, `--color-green`, etc.). Estética minimalista: mucho espacio en blanco, tipografía liviana espaciada, el dorado solo como acento. Logos en `/public/brand/` (`logo-negro.png` para fondos claros, `logo-blanco.png` para oscuros).
 

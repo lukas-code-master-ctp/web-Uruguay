@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import ProjectHero from '@/components/project/ProjectHero'
 import ProjectSectionNav from '@/components/project/ProjectSectionNav'
 import ProjectIntro from '@/components/project/ProjectIntro'
+import VideoShowcase from '@/components/project/VideoShowcase'
 import Gallery from '@/components/project/Gallery'
 import Masterplan from '@/components/project/Masterplan'
 import NearbyPoints from '@/components/project/NearbyPoints'
@@ -12,6 +13,7 @@ import PageTransition from '@/components/shared/PageTransition'
 import Footer from '@/components/shared/Footer'
 import JsonLd from '@/components/project/JsonLd'
 import { getProyectos, getProyectoBySlug } from '@/lib/projects'
+import { getTema } from '@/lib/proyecto-tema'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -52,31 +54,34 @@ export default async function ProyectoPage({ params }: Props) {
   // Proyectos SOLD OUT (activo=false) no tienen página dedicada — 404.
   if (!proyecto || !proyecto.activo) notFound()
 
-  // La Martina usa tema claro (fondos blanco/arena, acento #9a6642 en vez de negro/dorado).
-  const claro = proyecto.slug === 'la-martina'
+  // Personalización visual del proyecto (ver lib/proyecto-tema.ts).
+  const tema = getTema(proyecto.slug)
 
   return (
     <PageTransition>
       <JsonLd proyecto={proyecto} />
 
       {/* Hero a pantalla completa */}
-      <ProjectHero proyecto={proyecto} />
+      <ProjectHero proyecto={proyecto} tema={tema} />
 
       {/* Nav de secciones — sticky bajo el hero */}
       <ProjectSectionNav tieneMasterplan={!!proyecto.masterplanEmbed} />
 
       {/* Secciones */}
-      <ProjectIntro proyecto={proyecto} />
-      <NearbyPoints puntos={proyecto.puntosCercanos} nombre={proyecto.nombre} ubicacion={proyecto.ubicacion} mapEmbed={proyecto.mapEmbed} claro={claro} />
-      {proyecto.masterplanEmbed && <Masterplan src={proyecto.masterplanEmbed} claro={claro} />}
-      <Gallery portada={proyecto.imagenes.portadaGaleria} imagenes={proyecto.imagenes.galeria} />
+      <ProjectIntro proyecto={proyecto} tema={tema} />
+      {tema.youtubeId && (
+        <VideoShowcase nombre={proyecto.nombre} youtubeId={tema.youtubeId} datos={tema.datosVideo} />
+      )}
+      <NearbyPoints puntos={proyecto.puntosCercanos} nombre={proyecto.nombre} ubicacion={proyecto.ubicacion} mapEmbed={proyecto.mapEmbed} tema={tema} />
+      {proyecto.masterplanEmbed && <Masterplan src={proyecto.masterplanEmbed} claro={tema.claro} />}
+      <Gallery portada={proyecto.imagenes.portadaGaleria} imagenes={proyecto.imagenes.galeria} claro={tema.claro} />
       <FinancingCalc
         precioBase={proyecto.precioDesde}
         cuotas={proyecto.financiamientoCuotas}
         tasas={proyecto.financiamientoTasas}
-        claro={claro}
+        tema={tema}
       />
-      <ContactForm proyectoSlug={proyecto.slug} proyectoNombre={proyecto.nombre} claro={claro} />
+      <ContactForm proyectoSlug={proyecto.slug} proyectoNombre={proyecto.nombre} tema={tema} />
 
       <Footer />
     </PageTransition>

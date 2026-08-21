@@ -9,9 +9,9 @@ interface Props {
 }
 
 export default function Masterplan({ src, claro = false }: Props) {
-  const bg = claro ? 'bg-[#F5F0E8]' : 'bg-[#0A0A0A]'
-  const accent = claro ? 'text-[#9a6642]' : 'text-[#C6A665]'
-  const titulo = claro ? 'text-[#9a6642]' : 'text-white'
+  const bg = claro ? 'bg-white' : 'bg-[#0A0A0A]'
+  const accent = claro ? 'text-martina-grafito/70' : 'text-[#C6A665]'
+  const titulo = claro ? 'font-marca text-martina-verde' : 'text-white'
 
   return (
     <section id="masterplan" className={bg}>
